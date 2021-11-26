@@ -19,8 +19,7 @@ firestorm.initialize(firestore)
 ## Collection définition
 The collection use `@field` decorator for each fields stored in firebase
 ```javascript
-import { Collection } from '@emage-me/firestorm'
-import { field } from '@emage-me/firestorm/decorators'
+import { Collection, field } from '@emage-me/firestorm'
 
 class User extends Collection {
   static collectionName: string = 'user'
@@ -144,8 +143,7 @@ await User.query
 
 ## Subcollection définition
 ```javascript
-import { Collection, Subcollection, CollectionRepository } from '@emage-me/firestorm'
-import { field, subCollection } from '@emage-me/firestorm/decorators'
+import { Collection, Subcollection, CollectionRepository, field, subCollection } from '@emage-me/firestorm'
 
 class User extends SubCollection {
   static collectionName: string = 'user'
