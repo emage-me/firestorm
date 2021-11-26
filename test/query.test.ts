@@ -1,6 +1,5 @@
 import { clear } from './test.helper'
-import { Collection } from '../src'
-import { field } from '../src/decorators'
+import { Collection, field } from '../src'
 
 class Model extends Collection {
   static collectionName: string = 'model'

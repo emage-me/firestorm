@@ -1,5 +1,5 @@
-import { Collection, SubCollection, CollectionRepository } from '../src'
-import { field, date, subCollection, getFields, getDates, getSubcollections } from '../src/decorators'
+import { Collection, SubCollection, CollectionRepository, field, date, subCollection } from '../src'
+import { getFields, getDates, getSubcollections } from '../src/decorators'
 import { Instance } from '../src/Instance'
 
 class User extends SubCollection {

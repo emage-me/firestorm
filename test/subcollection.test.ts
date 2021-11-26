@@ -1,6 +1,5 @@
 import { clear } from './test.helper'
-import { Collection, SubCollection, CollectionRepository } from '../src'
-import { field, date, subCollection } from '../src/decorators'
+import { Collection, SubCollection, CollectionRepository, field, date, subCollection } from '../src'
 
 class User extends SubCollection {
   static collectionName: string = 'user'
