@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "strictNullChecks": true,
+    "esModuleInterop": true,
+    "outDir": "lib",
+    "declaration": true,
+  },
+  "include": [
+    "src", "test"
+  ]
+}
