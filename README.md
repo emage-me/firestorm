@@ -260,5 +260,5 @@ Used to retrive a JS Date Object instead of a firebaseTimestamp
 ## SubCollection
 Used to add a subCollection 
 ```javascript
-@subCollection(User) users: () => CollectionRepository<User>
+@subCollection(User) users: () => CollectionRepository<typeof User>
 ```
