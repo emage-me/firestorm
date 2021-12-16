@@ -108,26 +108,26 @@ const users = await User.findAllBy('firstName','Jack')
 ### First
 Get first item
 ```javascript
-await User.query.first().get()
+await User.query().first().get()
 ```
 ### FirstOrFail
 Get first item or fail
 ```javascript
-await User.query.firstOrFail().get()
+await User.query().firstOrFail().get()
 ```
 ### Where
 ```javascript
-await User.query.where('firstName','==','jack').get()
+await User.query().where('firstName','==','jack').get()
 ```
 
 ### Orderby
 ```javascript
-await User.query.orderby('order','asc').get()
+await User.query().orderby('order','asc').get()
 ```
 
 ### Limit
 ```javascript
-await User.query.limit(3).get()
+await User.query().limit(3).get()
 ```
 
 ### Multiple operation
@@ -212,26 +212,26 @@ const users = await app.users.findAllBy('firstName','Jack')
 ### First
 Get first item
 ```javascript
-await app.users.query.first().get()
+await app.users.query().first().get()
 ```
 ### FirstOrFail
 Get first item or fail
 ```javascript
-await app.users.query.firstOrFail().get()
+await app.users.query().firstOrFail().get()
 ```
 ### Where
 ```javascript
-await app.users.query.where('firstName','==','jack').get()
+await app.users.query().where('firstName','==','jack').get()
 ```
 
 ### Orderby
 ```javascript
-await app.users.query.orderby('order','asc').get()
+await app.users.query().orderby('order','asc').get()
 ```
 
 ### Limit
 ```javascript
-await app.users.query.limit(3).get()
+await app.users.query().limit(3).get()
 ```
 
 ### Querry operation can be chained
