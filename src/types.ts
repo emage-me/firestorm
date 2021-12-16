@@ -6,3 +6,4 @@ export type DocumentSnapshot = FirebaseFirestore.DocumentSnapshot
 export type DocumentReference = FirebaseFirestore.DocumentReference
 export type Query = FirebaseFirestore.Query
 export type QuerySnapshot = FirebaseFirestore.QuerySnapshot
+export type FieldPath = FirebaseFirestore.FieldPath
