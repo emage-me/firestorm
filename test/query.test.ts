@@ -1,4 +1,5 @@
 import { clear } from './test.helper'
+import { FieldPath } from '@google-cloud/firestore'
 import { Collection, field } from '../src'
 
 class Model extends Collection {
@@ -128,6 +129,20 @@ describe('Firestorm query', () => {
     it('returns model', async () => {
       const dbModel = await Model.query().limit(1).get()
       expect(dbModel.length).toBe(1)
+    })
+  })
+  describe('paginate', () => {
+    beforeEach(async () => {
+      model = new Model(modelProperties)
+      otherModel = new Model({ ...modelProperties, id: '0', count: 2 })
+      await Promise.all([
+        model.save(),
+        otherModel.save()
+      ])
+    })
+    it('returns model', async () => {
+      const dbModel = await Model.query().orderBy(FieldPath.documentId(), 'asc').paginate(1, '0').get()
+      expect(dbModel[0].id).toBe(model.id)
     })
   })
   describe('filters', () => {
