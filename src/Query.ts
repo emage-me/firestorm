@@ -43,6 +43,12 @@ export class FirestormQuery<T extends typeof Instance> {
     return this
   }
 
+  public filters (filters: any[][]): FirestormQuery<T> {
+    filters.forEach(([key, operator, value]) => {
+      this.query = this.query.where(key, operator, value)
+    })
+    return this
+  }
   private queryConvertor (querySnapShot: QuerySnapshot): Array<InstanceType<T>> {
     if (querySnapShot.empty) return []
     return querySnapShot.docs.map(documentSnapShot => this.fromSnapshot(documentSnapShot))
