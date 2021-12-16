@@ -1,8 +1,10 @@
 # Setup
 
 ## Installation
+set `"experimentalDecorators": true'` in `tsconfig.json`
 ```shell
-yarn add firestorm
+yarn add @emage-me/firestorm
+
 ```
 
 ## Initialisation
