@@ -1,5 +1,5 @@
 import { Instance } from './Instance'
-import { Query, QuerySnapshot, DocumentSnapshot } from './types'
+import { Query, QuerySnapshot, DocumentSnapshot, FieldPath } from './types'
 
 export class FirestormQuery<T extends typeof Instance> {
   InstanceConstuctor: new(data: any, parent: any) => T
@@ -49,6 +49,13 @@ export class FirestormQuery<T extends typeof Instance> {
     })
     return this
   }
+
+  public paginate (limit: number, id: string): FirestormQuery<T> {
+    if (id != null) this.query = this.query.startAfter(id)
+    if (limit != null) this.query = this.query.limit(limit)
+    return this
+  }
+
   private queryConvertor (querySnapShot: QuerySnapshot): Array<InstanceType<T>> {
     if (querySnapShot.empty) return []
     return querySnapShot.docs.map(documentSnapShot => this.fromSnapshot(documentSnapShot))
