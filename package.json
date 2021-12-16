@@ -1,12 +1,13 @@
 {
   "name": "@emage-me/firestorm",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Firestore ORM",
   "main": "lib/src/index.js",
   "types": "lib/src/index.d.ts",
   "scripts": {
     "test": "test",
     "build": "tsc",
+    "publish": "npm publish --access public",
     "test-all": "yarn ts-standard && jest",
     "test-init": "firebase emulators:start --only firestore"
   },
