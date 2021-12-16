@@ -33,7 +33,7 @@ export class FirestormQuery<T extends typeof Instance> {
     return this
   }
 
-  public orderBy (fieldPath: string, orderByDirection): FirestormQuery<T> {
+  public orderBy (fieldPath: string | FieldPath, orderByDirection): FirestormQuery<T> {
     this.query = this.query.orderBy(fieldPath, orderByDirection)
     return this
   }
