@@ -92,8 +92,10 @@ describe('Firestorm query', () => {
       fieldPath = 'count'
       model = new Model(modelProperties)
       otherModel = new Model({ ...modelProperties, count: 2 })
-      await model.save()
-      await otherModel.save()
+      await Promise.all([
+        model.save(),
+        otherModel.save()
+      ])
     })
     describe('with desc direction', () => {
       beforeEach(async () => {
@@ -118,10 +120,12 @@ describe('Firestorm query', () => {
     beforeEach(async () => {
       model = new Model(modelProperties)
       otherModel = new Model({ ...modelProperties, count: 2 })
-      await model.save()
-      await otherModel.save()
+      await Promise.all([
+        model.save(),
+        otherModel.save()
+      ])
     })
-    it('return ordered models', async () => {
+    it('returns model', async () => {
       const dbModel = await Model.query().limit(1).get()
       expect(dbModel.length).toBe(1)
     })
