@@ -54,7 +54,7 @@ export class CollectionRepository<T extends typeof Instance> {
     return await this.query.get()
   }
 
-  public async findAllBy (field: string, value: string): Promise<Array<InstanceType<T>>> {
+  public async findAllBy (field: string, value: string | boolean): Promise<Array<InstanceType<T>>> {
     return await this.query.where(field, '==', value).get()
   }
 
