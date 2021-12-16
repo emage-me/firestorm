@@ -5,11 +5,12 @@ class Model extends Collection {
   static collectionName: string = 'model'
   @field label: string
   @field count: number
+  @field isEmpty: boolean
   @date creationDate: Date
 }
 
 describe('Firebase', () => {
-  const modelProperties = { label: 'value', count: 1, creationDate: new Date() }
+  const modelProperties = { label: 'value', count: 1, creationDate: new Date(), isEmpty: false }
   const modelData = { id: '0', ...modelProperties }
   let model: Model
   let otherModel: Model
@@ -254,6 +255,10 @@ describe('Firebase', () => {
       })
       it('returns two models', async () => {
         const dbModels = await Model.findAllBy('label', model.label)
+        expect(dbModels.length).toBe(2)
+      })
+      it('returns two models', async () => {
+        const dbModels = await Model.findAllBy('isEmpty', false)
         expect(dbModels.length).toBe(2)
       })
     })
