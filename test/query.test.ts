@@ -130,4 +130,22 @@ describe('Firestorm query', () => {
       expect(dbModel.length).toBe(1)
     })
   })
+  describe('filters', () => {
+    beforeEach(async () => {
+      model = new Model(modelProperties)
+      otherModel = new Model({ ...modelProperties, count: 2 })
+      await Promise.all([
+        model.save(),
+        otherModel.save()
+      ])
+    })
+    it('found one  model', async () => {
+      const filters = [
+        ['label', '==', 'value'],
+        ['count', '==', 1]
+      ]
+      const dbModels = await Model.query().filters(filters).get()
+      expect(dbModels.length).toStrictEqual(1)
+    })
+  })
 })
