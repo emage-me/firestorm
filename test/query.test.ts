@@ -4,8 +4,8 @@ import { Collection, field } from '../src'
 
 class Model extends Collection {
   static collectionName: string = 'model'
-  @field label: string
-  @field count: number
+  @field() label: string
+  @field() count: number
 }
 
 describe('Firestorm query', () => {

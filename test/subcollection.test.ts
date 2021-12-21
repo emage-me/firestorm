@@ -3,14 +3,14 @@ import { Collection, SubCollection, CollectionRepository, field, date, subCollec
 
 class User extends SubCollection {
   static collectionName: string = 'user'
-  @field firstName: string
-  @field LastName: string
+  @field() firstName: string
+  @field() LastName: string
 }
 
 class Model extends Collection {
   static collectionName: string = 'model'
-  @field label: string
-  @field count: number
+  @field() label: string
+  @field() count: number
   @date creationDate: Date
   @subCollection(User) users: () => CollectionRepository<typeof User>
 }

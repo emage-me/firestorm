@@ -3,9 +3,9 @@ import { Collection, field, date } from '../src'
 
 class Model extends Collection {
   static collectionName: string = 'model'
-  @field label: string
-  @field count: number
-  @field isEmpty: boolean
+  @field() label: string
+  @field(0) count: number
+  @field() isEmpty: boolean
   @date creationDate: Date
 }
 
@@ -23,6 +23,10 @@ describe('Firebase', () => {
     it('returns collection instance', async () => {
       model = new Model({})
       expect(model).toBeInstanceOf(Model)
+    })
+    it('init default value', async () => {
+      model = new Model({})
+      expect(model.count).toBe(0)
     })
   })
 

@@ -1,25 +1,25 @@
 import { Collection, SubCollection, CollectionRepository, field, date, subCollection } from '../src'
-import { getFields, getDates, getSubcollections } from '../src/decorators'
+import { getFields, getDates, getSubcollections, getdefaultValue } from '../src/decorators'
 import { Instance } from '../src/Instance'
 
 class User extends SubCollection {
   static collectionName: string = 'user'
-  @field firstName: string
-  @field LastName: string
+  @field('Peter') firstName: string
+  @field() LastName: string
 }
 
 class ModelWithSubcollection extends Collection {
   static collectionName: string = 'modelWuthSubcollection'
-  @field label: string
-  @field count: number
+  @field() label: string
+  @field() count: number
   @date creationDate: Date
   @subCollection(User) users: () => CollectionRepository<typeof Instance>
 }
 
 class Model extends Collection {
   static collectionName: string = 'model'
-  @field otherLabel: string
-  @field otherCount: number
+  @field() otherLabel: string
+  @field() otherCount: number
 }
 
 describe('Firestorm decorators', () => {
@@ -41,6 +41,10 @@ describe('Firestorm decorators', () => {
   it('creates corectly firebaseKeys for subcollection', async () => {
     const keys = getFields(User.prototype)
     expect(keys).toStrictEqual(['firstName', 'LastName'])
+  })
+
+  it('creates corectly default values', async () => {
+    expect(getdefaultValue(User.prototype)).toStrictEqual([['firstName', 'Peter']])
   })
 
   it('creates corectly subCollections', async () => {
