@@ -1,5 +1,5 @@
 import { CollectionRepository } from './CollectionRepository'
-import { getDates, getFields, getSubcollections } from './decorators'
+import { getDates, getdefaultValue, getFields, getSubcollections } from './decorators'
 import { CollectionReference, DocumentReference } from './types'
 
 export class Instance {
@@ -9,6 +9,9 @@ export class Instance {
   static collectionName: string = ''
 
   constructor (data: any, parent?: Instance) {
+    for (const [key, defaultValue] of getdefaultValue(this)) {
+      this[key] = defaultValue
+    }
     Object.assign(this, data)
     this.parent = parent
     for (const [key, subCollection] of getSubcollections(this)) {

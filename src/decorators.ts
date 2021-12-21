@@ -2,11 +2,15 @@ import 'reflect-metadata'
 import { SubCollection } from '.'
 
 const fields = Symbol('fields')
+const defaultValues = Symbol('defaultValues')
 const dates = Symbol('dates')
 const subCollections = Symbol('subCollections')
 
-export function field (target: any, propertyKey: string): void {
-  Reflect.defineMetadata(propertyKey, propertyKey, target, fields)
+export function field (defaultValue?: any) {
+  return function (target: any, propertyKey: string) {
+    Reflect.defineMetadata(propertyKey, propertyKey, target, fields)
+    if (defaultValue !== undefined) Reflect.defineMetadata(propertyKey, defaultValue, target, defaultValues)
+  }
 }
 
 export function date (target: any, propertyKey: string): void {
@@ -22,6 +26,15 @@ export function subCollection (subCollection: any) {
 
 export function getFields (target: any): string[] {
   return Reflect.getMetadataKeys(target, fields)
+}
+
+export function getdefaultValue (target: any): Array<[string, any]> {
+  const defaultValueKeys = Reflect.getMetadataKeys(target, defaultValues)
+
+  return defaultValueKeys.map((key) => {
+    const defaultValue = Reflect.getMetadata(key, target, defaultValues)
+    return [key, defaultValue]
+  })
 }
 
 export function getDates (target: any): string[] {
