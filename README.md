@@ -25,8 +25,8 @@ import { Collection, field } from '@emage-me/firestorm'
 
 class User extends Collection {
   static collectionName: string = 'user'
-  @field firstName: string
-  @field lastName: string
+  @field() firstName: string
+  @field() lastName: string
   fullName: string
 
   get fullName() {
@@ -149,13 +149,13 @@ import { Collection, Subcollection, CollectionRepository, field, subCollection }
 
 class User extends SubCollection {
   static collectionName: string = 'user'
-  @field firstName: string
-  @field LastName: string
+  @field() firstName: string
+  @field() LastName: string
 }
 
 class App extends Collection {
   static collectionName: string = 'app'
-  @field name: string
+  @field() name: string
   @subCollection(User) users: () => CollectionRepository<typeof User>
 }
 ```
@@ -250,7 +250,7 @@ attributes without `@field` or `@date` are not save in firebase
 
 ## Field
 ```javascript
-@field firstName: string
+@field() firstName: string
 ```
 
 ## Date
