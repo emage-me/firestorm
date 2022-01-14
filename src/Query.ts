@@ -43,6 +43,16 @@ export class FirestormQuery<T extends typeof Instance> {
     return this
   }
 
+  public startAt (id: string | DocumentSnapshot): FirestormQuery<T> {
+    this.query = this.query.startAt(id)
+    return this
+  }
+
+  public startAfter (id: string | DocumentSnapshot): FirestormQuery<T> {
+    this.query = this.query.startAfter(id)
+    return this
+  }
+
   public filters (filters: any[][]): FirestormQuery<T> {
     filters.forEach(([key, operator, value]) => {
       this.query = this.query.where(key, operator, value)
@@ -51,7 +61,7 @@ export class FirestormQuery<T extends typeof Instance> {
   }
 
   public paginate (limit: number, id: string): FirestormQuery<T> {
-    if (id != null) this.query = this.query.startAfter(id)
+    if (id != null) this.query = this.query.startAt(id)
     if (limit != null) this.query = this.query.limit(limit)
     return this
   }
