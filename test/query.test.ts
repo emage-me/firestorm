@@ -55,6 +55,11 @@ describe('Firestorm query', () => {
       it('throws an error', async () => {
         await expect(Model.query().firstOrFail()).rejects.toThrow('No instance found')
       })
+      describe('with custom error message', () => {
+        it('throws an custom error', async () => {
+          await expect(Model.query().firstOrFail('Custom')).rejects.toThrow('Custom')
+        })
+      })
     })
   })
   describe('where', () => {
@@ -141,8 +146,8 @@ describe('Firestorm query', () => {
       ])
     })
     it('returns model', async () => {
-      const dbModel = await Model.query().orderBy(FieldPath.documentId(), 'asc').paginate(1, '0').get()
-      expect(dbModel[0].id).toBe(model.id)
+      const dbModel = await Model.query().orderBy(FieldPath.documentId(), 'asc').paginate(1, otherModel.id).get()
+      expect(dbModel[0].id).toBe(otherModel.id)
     })
   })
   describe('filters', () => {

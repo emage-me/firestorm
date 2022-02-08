@@ -25,8 +25,8 @@ export class CollectionRepository<T extends typeof Instance> {
     return await this.query.first()
   }
 
-  public async firstOrFail (): Promise<InstanceType<T>> {
-    return await this.query.firstOrFail()
+  public async firstOrFail (errorMessage?: string): Promise<InstanceType<T>> {
+    return await this.query.firstOrFail(errorMessage)
   }
 
   public async find (id: string): Promise<InstanceType<T>|undefined> {
@@ -34,9 +34,9 @@ export class CollectionRepository<T extends typeof Instance> {
     return this.documentConvertor(document)
   }
 
-  public async findOrFail (id: string): Promise<InstanceType<T>> {
+  public async findOrFail (id: string, errorMessage?: string): Promise<InstanceType<T>> {
     const instance = await this.find(id)
-    if (instance === undefined) throw new Error(`Id ${id} Not found in ${this.collection}`)
+    if (instance === undefined) throw new Error(errorMessage ?? `Id ${id} Not found in ${this.collection}`)
     return instance
   }
 
@@ -44,9 +44,9 @@ export class CollectionRepository<T extends typeof Instance> {
     return await this.query.where(field, '==', value).first()
   }
 
-  public async findByOrFail (field: string, value: string): Promise<InstanceType<T>> {
+  public async findByOrFail (field: string, value: string, errorMessage?: string): Promise<InstanceType<T>> {
     const instance = await this.findBy(field, value)
-    if (instance === undefined) throw new Error('No instance found')
+    if (instance === undefined) throw new Error(errorMessage ?? 'No instance found')
     return instance
   }
 

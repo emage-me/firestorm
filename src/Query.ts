@@ -22,9 +22,9 @@ export class FirestormQuery<T extends typeof Instance> {
     return this.queryConvertor(query)[0]
   }
 
-  public async firstOrFail (): Promise<InstanceType<T>> {
+  public async firstOrFail (errorMessage?: string): Promise<InstanceType<T>> {
     const instance = await this.first()
-    if (instance === undefined) throw new Error('No instance found')
+    if (instance === undefined) throw new Error(errorMessage ?? 'No instance found')
     return instance
   }
 

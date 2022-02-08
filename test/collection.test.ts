@@ -132,6 +132,11 @@ describe('Firebase', () => {
       it('throws an error', async () => {
         await expect(Model.firstOrFail()).rejects.toThrow('No instance found')
       })
+      describe('with custom error message', () => {
+        it('throws an custom error', async () => {
+          await expect(Model.firstOrFail('Custom')).rejects.toThrow('Custom')
+        })
+      })
     })
   })
   describe('find', () => {
@@ -187,6 +192,11 @@ describe('Firebase', () => {
       it('throws an error', async () => {
         await expect(Model.findOrFail(model.id)).rejects.toThrow('Id 0 Not found in model')
       })
+      describe('with custom error message', () => {
+        it('throws an custom error', async () => {
+          await expect(Model.findOrFail(model.id, 'Custom')).rejects.toThrow('Custom')
+        })
+      })
     })
   })
   describe('findBy', () => {
@@ -225,6 +235,11 @@ describe('Firebase', () => {
     describe('without model existing', () => {
       it('throws an error', async () => {
         await expect(Model.findByOrFail('label', model.label)).rejects.toThrow('No instance found')
+      })
+      describe('with custom error message', () => {
+        it('throws an custom error', async () => {
+          await expect(Model.findByOrFail('label', model.label, 'Custom')).rejects.toThrow('Custom')
+        })
       })
     })
   })
