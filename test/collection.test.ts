@@ -72,6 +72,17 @@ describe('Firebase', () => {
       expect(dbModel.label).toBe('otherValue')
     })
   })
+  describe('delete', () => {
+    beforeEach(async () => {
+      model = new Model(modelData)
+      await model.save()
+    })
+    it('updates model in firebase', async () => {
+      await model.delete()
+      const dbModel = await Model.findAll()
+      expect(dbModel.length).toBe(0)
+    })
+  })
   describe('first', () => {
     describe('with model existing', () => {
       beforeEach(async () => {

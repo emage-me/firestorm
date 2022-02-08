@@ -47,6 +47,10 @@ export class Instance {
     await this.collectionRef().doc(this.id).update(data)
   }
 
+  public async delete (): Promise<void> {
+    await this.collectionRef().doc(this.id).delete()
+  }
+
   public toFirestore (): any {
     const object = getFields(this).reduce((object, key) => {
       object[key] = this[key]
