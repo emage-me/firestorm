@@ -56,5 +56,18 @@ describe('Firebase', () => {
         })
       })
     })
+    describe('with parent collection ID set after parent creation', () => {
+      beforeEach(async () => {
+        await Model.collectionRef().doc('1').collection('user').doc('1').set({ firstname: 'test' })
+        model = new Model({})
+        model.id = '1'
+      })
+      describe('findOrFail', () => {
+        it('returns a subcollection instance', async () => {
+          const user = await model.users().findOrFail('1')
+          expect(user).toBeInstanceOf(User)
+        })
+      })
+    })
   })
 })

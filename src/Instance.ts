@@ -15,8 +15,10 @@ export class Instance {
     Object.assign(this, data)
     this.parent = parent
     for (const [key, subCollection] of getSubcollections(this)) {
-      if (this.id != null) this[key] = () => new CollectionRepository(subCollection, this)
-      else this[key] = () => { throw new Error('SubCollection require parent collection ID') }
+      this[key] = function () {
+        if (this.id == null) throw new Error('SubCollection require parent collection ID')
+        return new CollectionRepository(subCollection, this)
+      }
     }
   }
 
