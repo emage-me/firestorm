@@ -6,7 +6,7 @@ class Model extends Collection {
   @field() label: string
   @field(0) count: number
   @field() isEmpty: boolean
-  @date creationDate: Date
+  @date() creationDate: Date
 }
 
 describe('Firebase', () => {

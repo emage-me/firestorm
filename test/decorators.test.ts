@@ -2,6 +2,8 @@ import { Collection, SubCollection, CollectionRepository, field, date, subCollec
 import { getFields, getDates, getSubcollections, getdefaultValue } from '../src/decorators'
 import { Instance } from '../src/Instance'
 
+const defaultDate = new Date()
+
 class User extends SubCollection {
   static collectionName: string = 'user'
   @field('Peter') firstName: string
@@ -12,7 +14,8 @@ class ModelWithSubcollection extends Collection {
   static collectionName: string = 'modelWuthSubcollection'
   @field() label: string
   @field() count: number
-  @date creationDate: Date
+  @date() creationDate: Date
+  @date(defaultDate) updateDate: Date
   @subCollection(User) users: () => CollectionRepository<typeof Instance>
 }
 
@@ -30,12 +33,12 @@ describe('Firestorm decorators', () => {
 
   it('creates corectly firebaseKeys for collection with subcollection', async () => {
     const keys = getFields(ModelWithSubcollection.prototype)
-    expect(keys).toStrictEqual(['label', 'count', 'creationDate'])
+    expect(keys).toStrictEqual(['label', 'count', 'creationDate', 'updateDate'])
   })
 
   it('creates corectly dateKeys for collection with date', async () => {
     const keys = getDates(ModelWithSubcollection.prototype)
-    expect(keys).toStrictEqual(['creationDate'])
+    expect(keys).toStrictEqual(['creationDate', 'updateDate'])
   })
 
   it('creates corectly firebaseKeys for subcollection', async () => {
@@ -45,6 +48,10 @@ describe('Firestorm decorators', () => {
 
   it('creates corectly default values', async () => {
     expect(getdefaultValue(User.prototype)).toStrictEqual([['firstName', 'Peter']])
+  })
+
+  it('creates corectly date default values', async () => {
+    expect(getdefaultValue(ModelWithSubcollection.prototype)).toStrictEqual([['updateDate', defaultDate]])
   })
 
   it('creates corectly subCollections', async () => {
