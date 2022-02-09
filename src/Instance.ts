@@ -64,7 +64,7 @@ export class Instance {
 
   public fromFirestore (): this {
     getDates(this).forEach(key => {
-      if (this[key] != null) this[key] = this[key].toDate()
+      if (this[key] != null && !(this[key] instanceof Date)) this[key] = this[key].toDate()
     })
     return this
   }
