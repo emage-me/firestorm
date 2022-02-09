@@ -11,7 +11,7 @@ class Model extends Collection {
   static collectionName: string = 'model'
   @field() label: string
   @field() count: number
-  @date creationDate: Date
+  @date() creationDate: Date
   @subCollection(User) users: () => CollectionRepository<typeof User>
 }
 

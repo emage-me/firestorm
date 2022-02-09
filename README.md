@@ -256,7 +256,7 @@ attributes without `@field` or `@date` are not save in firebase
 ## Date
 Used to retrive a JS Date Object instead of a firebaseTimestamp
 ```javascript
-@date birthDate: date
+@date() birthDate: date
 ```
 
 ## SubCollection
