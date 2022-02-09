@@ -13,9 +13,12 @@ export function field (defaultValue?: any) {
   }
 }
 
-export function date (target: any, propertyKey: string): void {
-  Reflect.defineMetadata(propertyKey, propertyKey, target, fields)
-  Reflect.defineMetadata(propertyKey, propertyKey, target, dates)
+export function date (defaultValue?: any) {
+  return function (target: any, propertyKey: string) {
+    Reflect.defineMetadata(propertyKey, propertyKey, target, fields)
+    Reflect.defineMetadata(propertyKey, propertyKey, target, dates)
+    if (defaultValue !== undefined) Reflect.defineMetadata(propertyKey, defaultValue, target, defaultValues)
+  }
 }
 
 export function subCollection (subCollection: any) {
