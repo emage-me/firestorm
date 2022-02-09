@@ -1,3 +1,9 @@
+## [0.4.0] 09-22-2022
+### fixed
+- Subcollection accessor
+### added
+- Default date value
+
 ## [0.3.0]
 ### added
 - Instance delete
