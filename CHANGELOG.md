@@ -1,3 +1,7 @@
+## [0.4.2] 09-22-2022
+### fixed
+- Default date value
+
 ## [0.4.0] 09-22-2022
 ### fixed
 - Subcollection accessor
