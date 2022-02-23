@@ -104,6 +104,13 @@ Find all documents with an attribute
 const users = await User.findAllBy('firstName','Jack')
 ```
 
+### findByIds
+Find many documents by id
+```javascript
+const users = await User.findByIds(['24','42'])
+```
+
+
 ## Query data
 ### First
 Get first item
@@ -206,6 +213,12 @@ const users = await app.users.findAll()
 Find all documents with an attribute
 ```javascript
 const users = await app.users.findAllBy('firstName','Jack')
+```
+
+### findByIds
+Find many documents by id
+```javascript
+const users = await app.users.findByIds(['24','42'])
 ```
 
 ## Query data
