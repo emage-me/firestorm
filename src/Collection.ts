@@ -26,4 +26,5 @@ export class Collection extends Instance {
   public static async findByOrFail<T extends typeof Instance> (this: T, field: string, value: string, errorMessage?: string): Promise<InstanceType<T>> { return await (new CollectionRepository<T>(this, null)).findByOrFail(field, value, errorMessage) }
   public static async findAll<T extends typeof Instance> (this: T): Promise<Array<InstanceType<T>>> { return await (new CollectionRepository<T>(this, null)).findAll() }
   public static async findAllBy<T extends typeof Instance> (this: T, field: string, value: string | boolean): Promise<Array<InstanceType<T>>> { return await (new CollectionRepository<T>(this, null)).findAllBy(field, value) }
+  public static async findByIds<T extends typeof Instance> (this: T, ids: string[]): Promise<Array<InstanceType<T>>> { return await (new CollectionRepository<T>(this, null)).findByIds(ids) }
 }

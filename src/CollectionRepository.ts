@@ -58,6 +58,17 @@ export class CollectionRepository<T extends typeof Instance> {
     return await this.query.where(field, '==', value).get()
   }
 
+  public async findByIds (ids: string[]): Promise<Array<InstanceType<T>>> {
+    const refs = ids.map(id => this.collectionRef.doc(id))
+    const docs = await this.collectionRef.firestore.getAll(...refs)
+    const intances: Array<InstanceType<T>> = []
+    docs.forEach(documentSnapShot => {
+      const intance = this.documentConvertor(documentSnapShot)
+      if (intance !== undefined) intances.push(intance)
+    })
+    return intances
+  }
+
   private documentConvertor (documentSnapShot: DocumentSnapshot): InstanceType<T>|undefined {
     if (documentSnapShot.exists) return this.query.fromSnapshot(documentSnapShot)
     return undefined
