@@ -1,3 +1,7 @@
+## [0.5.0] 02-23-2022
+### added
+- findByIds
+
 ## [0.4.2] 09-22-2022
 ### fixed
 - Default date value
