@@ -71,6 +71,15 @@ describe('Firebase', () => {
       const dbModel = await Model.findOrFail(model.id)
       expect(dbModel.label).toBe('otherValue')
     })
+    it('updates the instance', async () => {
+      await model.update({ ...modelData, label: 'otherValue' })
+      expect(model.label).toBe('otherValue')
+    })
+    it('updates only firebase field', async () => {
+      await model.update({ ...modelData, otherLabel: 'otherValue' })
+      // eslint-disable-next-line
+      expect(model['otherLabel']).toBe(undefined)
+    })
   })
   describe('delete', () => {
     beforeEach(async () => {
