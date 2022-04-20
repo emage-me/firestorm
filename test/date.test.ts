@@ -20,7 +20,8 @@ describe('Firebase', () => {
       })
       it('returns defaultDate', async () => {
         const model = await Model.findOrFail('1')
-        expect(model.creationDate).toBe(defaultDate)
+        expect(model.creationDate).toBeInstanceOf(Date)
+        expect(model.creationDate.getTime()).toBeGreaterThan(defaultDate.getTime())
       })
     })
   })
