@@ -9,8 +9,10 @@ export class Instance {
   static collectionName: string = ''
 
   constructor (data: any, parent?: Instance) {
+    const datesKey = getDates(this)
     for (const [key, defaultValue] of getdefaultValue(this)) {
       this[key] = defaultValue
+      if (datesKey.includes(key)) this[key] = new Date()
     }
     Object.assign(this, data)
     this.parent = parent
