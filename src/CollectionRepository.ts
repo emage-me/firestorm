@@ -40,11 +40,11 @@ export class CollectionRepository<T extends typeof Instance> {
     return instance
   }
 
-  public async findBy (field: string, value: string): Promise<InstanceType<T>|undefined> {
+  public async findBy (field: string, value: string | boolean | number): Promise<InstanceType<T>|undefined> {
     return await this.query.where(field, '==', value).first()
   }
 
-  public async findByOrFail (field: string, value: string, errorMessage?: string): Promise<InstanceType<T>> {
+  public async findByOrFail (field: string, value: string | boolean | number, errorMessage?: string): Promise<InstanceType<T>> {
     const instance = await this.findBy(field, value)
     if (instance === undefined) throw new Error(errorMessage ?? 'No instance found')
     return instance

@@ -218,6 +218,18 @@ describe('Firebase', () => {
         const dbModel = await Model.findBy('label', model.label)
         expect(dbModel).toBeInstanceOf(Model)
       })
+      describe('on a number field', () => {
+        it('returns instance of model', async () => {
+          const dbModel = await Model.findBy('count', model.count)
+          expect(dbModel).toBeInstanceOf(Model)
+        })
+      })
+      describe('on a number field', () => {
+        it('returns instance of model', async () => {
+          const dbModel = await Model.findBy('isEmpty', model.isEmpty)
+          expect(dbModel).toBeInstanceOf(Model)
+        })
+      })
       it('returns model properties', async () => {
         const dbModel = await Model.findBy('label', model.label)
         expect(dbModel?.data()).toStrictEqual(modelData)
