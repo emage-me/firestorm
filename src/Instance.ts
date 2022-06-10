@@ -48,7 +48,10 @@ export class Instance {
   }
 
   public async update (data): Promise<void> {
-    await this.collectionRef().doc(this.id).update(data)
+    const fields = getFields(this)
+    const fieldData = Object.fromEntries(Object.entries(data).filter(([key]) => fields.includes(key)))
+    await this.collectionRef().doc(this.id).update(fieldData)
+    Object.assign(this, fieldData)
   }
 
   public async delete (): Promise<void> {
