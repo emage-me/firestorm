@@ -1,3 +1,9 @@
+## [0.6.0] 06-14-2022
+### added
+- static subcollection findAllBy
+### fixed
+- findBy on number or boolean
+
 ## [0.5.0] 02-23-2022
 ### added
 - findByIds
