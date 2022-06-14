@@ -69,5 +69,33 @@ describe('Firebase', () => {
         })
       })
     })
+
+    describe('findAllBy', () => {
+      describe('with same firstName', () => {
+        let firstName: string
+
+        beforeEach(async () => {
+          model = new Model({ id: '1' })
+          const otherModel = new Model({ id: '2' })
+          firstName = 'GRADU'
+          const user = model.users().create({ id: '1', firstName, LastName: 'jean' })
+          const otherUser = model.users().create({ id: '2', firstName, LastName: 'paul' })
+          await Promise.all([
+            model.save(),
+            otherModel.save(),
+            user.save(),
+            otherUser.save()
+          ])
+        })
+        it('returns all users', async () => {
+          const user = await User.findAllBy('firstName', firstName)
+          expect(user.length).toBe(2)
+        })
+        it('set user parent id', async () => {
+          const user = await User.findAllBy('LastName', 'jean')
+          expect(user[0].parent.id).toBe('1')
+        })
+      })
+    })
   })
 })
