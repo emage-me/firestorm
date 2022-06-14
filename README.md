@@ -169,12 +169,10 @@ class App extends Collection {
 
 ## Constructor
 ```javascript
-// You can fetch the collection
-const app = await App.find('24')
-// Or just use the document id
 const app = new App({id:'24'})
 
-const users = await app.users.findAll()
+const user = await app.users.create({ id:1, fullName: 'jack' })
+
 ```
 
 ## Fetch data
