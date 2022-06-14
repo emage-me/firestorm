@@ -39,6 +39,7 @@ export class Instance {
     } else {
       if (this.collectionRef().dataById[this.id] === undefined) {
         this.collectionRef().data.push(this)
+        this.collectionRef().dataById[this.id] = this
       }
       await this.set(this)
       return this

@@ -1,14 +1,11 @@
 import { CollectionReference } from './types'
 import { Instance } from './Instance'
+import { Collection } from './Collection'
 
 export class SubCollection extends Instance {
-  parent: Instance
+  parent: Collection
 
   collectionRef (): CollectionReference {
-    if (this.parent.collectionRef()[this.parent.id] === undefined) this.parent.collectionRef()[this.parent.id] = {}
-    if (this.parent.collectionRef()[this.parent.id][this.constructor.collectionName] === undefined) {
-      this.parent.collectionRef()[this.parent.id][this.constructor.collectionName] = { data: [], dataById: [] }
-    }
-    return this.parent.collectionRef()[this.parent.id][this.constructor.collectionName]
+    return this.parent.subCollectionRef(this.constructor.collectionName)
   }
 }

@@ -11,16 +11,24 @@ export class Collection extends Instance {
 
   static collectionRef (): CollectionReference {
     if (firestorm.data[this.collectionName] === undefined) {
-      firestorm.data[this.collectionName] = { data: [], dataById: [] }
+      firestorm.data[this.collectionName] = { data: [], dataById: {} }
     }
     return firestorm.data[this.collectionName]
   }
 
   collectionRef (): CollectionReference {
     if (firestorm.data[this.constructor.collectionName] === undefined) {
-      firestorm.data[this.constructor.collectionName] = { data: [], dataById: [] }
+      firestorm.data[this.constructor.collectionName] = { data: [], dataById: {} }
     }
     return firestorm.data[this.constructor.collectionName]
+  }
+
+  subCollectionRef (subCollection: string): CollectionReference {
+    if (this.collectionRef()[this.id] === undefined) this.collectionRef()[this.id] = {}
+    if (this.collectionRef()[this.id][subCollection] === undefined) {
+      this.collectionRef()[this.id][subCollection] = { data: [], dataById: {} }
+    }
+    return this.collectionRef()[this.id][subCollection]
   }
 
   // Collection repository method shortcut

@@ -10,7 +10,7 @@ export class CollectionRepository<T extends typeof Instance> {
 
   constructor (model, parent) {
     this.collection = model.collectionName
-    this.collectionRef = parent == null ? model.collectionRef() : parent.collectionRef()
+    this.collectionRef = parent == null ? model.collectionRef() : parent.subCollectionRef(this.collection)
     this.InstanceConstuctor = model
     this.parent = parent
     this.query = new FirestormQuery<T>(model, parent, this.collectionRef.data)
