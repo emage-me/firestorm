@@ -1,5 +1,7 @@
+import { CollectionRepository } from '.'
+import firestorm from './'
 import { Instance } from './Instance'
-import { CollectionReference } from './types'
+import { CollectionGroup, CollectionReference } from './types'
 
 export class SubCollection extends Instance {
   parent: Instance
@@ -7,4 +9,10 @@ export class SubCollection extends Instance {
   collectionRef (): CollectionReference {
     return this.parent.docRef().collection(this.constructor.collectionName)
   }
+
+  static collectionRef (): CollectionGroup {
+    return firestorm.firestore.collectionGroup(this.collectionName)
+  }
+
+  public static async findAllBy<T extends typeof Instance> (this: T, field: string, value: string | boolean): Promise<Array<InstanceType<T>>> { return await (new CollectionRepository<T>(this, null)).findAllBy(field, value) }
 }

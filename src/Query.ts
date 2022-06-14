@@ -72,12 +72,14 @@ export class FirestormQuery<T extends typeof Instance> {
   }
 
   public fromSnapshot (documentSnapShot: DocumentSnapshot): InstanceType<T> {
+    const parentId = documentSnapShot.ref.parent.parent?.id
+    const parent = this.parent ?? (parentId != null ? { id: parentId } : undefined)
     const instance = new this.InstanceConstuctor(
       {
         id: documentSnapShot.id,
         ...documentSnapShot.data()
       }
-      , this.parent) as InstanceType<T>
+      , parent) as InstanceType<T>
     return instance.fromFirestore()
   }
 }
