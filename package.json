@@ -5,7 +5,7 @@
   "main": "lib/src/index.js",
   "types": "lib/src/index.d.ts",
   "scripts": {
-    "test": "test",
+    "test": "jest",
     "login": "npm login --scope=@emage-me",
     "build": "tsc",
     "publish": "npm publish --access public",
