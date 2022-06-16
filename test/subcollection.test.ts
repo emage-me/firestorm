@@ -97,5 +97,24 @@ describe('Firebase', () => {
         })
       })
     })
+    describe('query', () => {
+      describe('where', () => {
+        let firstName: string
+
+        beforeEach(async () => {
+          firstName = 'GRADU'
+          model = new Model({ id: '1' })
+          const user = model.users().create({ id: '1', firstName, LastName: 'jean' })
+          await Promise.all([
+            model.save(),
+            user.save()
+          ])
+        })
+        it('returns the user', async () => {
+          const user = await User.query().where('firstName', '==', firstName).get()
+          expect(user.length).toBe(1)
+        })
+      })
+    })
   })
 })
