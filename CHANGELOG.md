@@ -1,3 +1,7 @@
+## [0.7.0] 06-16-2022
+### added
+- static subcollection query
+
 ## [0.6.0] 06-14-2022
 ### added
 - static subcollection findAllBy
