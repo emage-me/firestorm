@@ -1,3 +1,7 @@
+## [0.8.0] 13-07-2022
+### added
+- dot notation support for update
+
 ## [0.7.0] 06-16-2022
 ### added
 - static subcollection query
