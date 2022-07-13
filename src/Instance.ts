@@ -1,6 +1,7 @@
 import { CollectionRepository } from './CollectionRepository'
 import { getDates, getdefaultValue, getFields, getSubcollections } from './decorators'
 import { CollectionReference, DocumentReference } from './types'
+import { objectAssign } from './object.helper'
 
 export class Instance {
   ['constructor']: typeof Instance
@@ -49,9 +50,9 @@ export class Instance {
 
   public async update (data): Promise<void> {
     const fields = getFields(this)
-    const fieldData = Object.fromEntries(Object.entries(data).filter(([key]) => fields.includes(key)))
+    const fieldData = Object.fromEntries(Object.entries(data).filter(([key]) => fields.includes(key.split('.')[0])))
     await this.collectionRef().doc(this.id).update(fieldData)
-    Object.assign(this, fieldData)
+    objectAssign(this, fieldData)
   }
 
   public async delete (): Promise<void> {
