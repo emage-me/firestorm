@@ -1,16 +1,21 @@
 import { clear } from './test.helper'
 import { Collection, field, date } from '../src'
 
+interface Field {
+  label: string
+}
+
 class Model extends Collection {
   static collectionName: string = 'model'
   @field() label: string
   @field(0) count: number
   @field() isEmpty: boolean
+  @field({}) field: Field
   @date() creationDate: Date
 }
 
 describe('Firebase', () => {
-  const modelProperties = { label: 'value', count: 1, creationDate: new Date(), isEmpty: false }
+  const modelProperties = { label: 'value', count: 1, creationDate: new Date(), isEmpty: false, field: {} }
   const modelData = { id: '0', ...modelProperties }
   let model: Model
   let otherModel: Model
@@ -79,6 +84,10 @@ describe('Firebase', () => {
       await model.update({ ...modelData, otherLabel: 'otherValue' })
       // eslint-disable-next-line
       expect(model['otherLabel']).toBe(undefined)
+    })
+    it('updates only firebase field', async () => {
+      await model.update({ 'field.label': 'name' })
+      expect(model.field.label).toBe('name')
     })
   })
   describe('delete', () => {
