@@ -18,7 +18,7 @@ export class Collection extends Instance {
 
   collectionRef (): CollectionReference {
     if (firestorm.data[this.constructor.collectionName] === undefined) {
-      firestorm.data[this.constructor.collectionName] = { data: [], dataById: {} }
+      firestorm.data[this.constructor.collectionName] = { data: [], dataById: {}, id: this.constructor.collectionName }
     }
     return firestorm.data[this.constructor.collectionName]
   }
@@ -26,7 +26,7 @@ export class Collection extends Instance {
   subCollectionRef (subCollection: string): CollectionReference {
     if (this.collectionRef()[this.id] === undefined) this.collectionRef()[this.id] = {}
     if (this.collectionRef()[this.id][subCollection] === undefined) {
-      this.collectionRef()[this.id][subCollection] = { data: [], dataById: {} }
+      this.collectionRef()[this.id][subCollection] = { data: [], dataById: {}, id: subCollection }
     }
     return this.collectionRef()[this.id][subCollection]
   }

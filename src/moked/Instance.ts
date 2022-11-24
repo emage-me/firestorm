@@ -1,3 +1,4 @@
+import { objectAssign } from '../object.helper'
 import { CollectionRepository } from './CollectionRepository'
 import { getdefaultValue, getSubcollections, getFields } from './decorators'
 import { CollectionReference } from './types'
@@ -23,7 +24,11 @@ export class Instance {
   }
 
   public collectionRef (): CollectionReference {
-    return { data: [], dataById: {} }
+    return { data: [], dataById: {}, id: this.constructor.collectionName }
+  }
+
+  public collectionGroupRef (): CollectionReference {
+    return { data: [], dataById: {}, id: this.constructor.collectionName }
   }
 
   public docRef (): any {
@@ -31,32 +36,25 @@ export class Instance {
   }
 
   async save (): Promise<this> {
-    if (this.id === '' || this.id === undefined) {
-      this.id = Math.random().toString(36).slice(-16)
-      await this.collectionRef().data.push(this)
-      this.collectionRef().dataById[this.id] = this
-      return this
-    } else {
-      if (this.collectionRef().dataById[this.id] === undefined) {
-        this.collectionRef().data.push(this)
-        this.collectionRef().dataById[this.id] = this
-      }
-      await this.set(this)
-      return this
-    }
+    if (this.id === '' || this.id === undefined) this.id = Math.random().toString(36).slice(-16)
+
+    await this.set(this)
+    return this
   }
 
   public async set (data): Promise<void> {
+    if (this.collectionRef().dataById[this.id] === undefined) {
+      this.collectionRef().data.push(data)
+      if (this.parent !== null) this.collectionGroupRef().data.push(data)
+    }
     this.collectionRef().dataById[this.id] = data
+    if (this.parent !== null) this.collectionGroupRef().dataById[this.id] = data
   }
 
   public async update (data): Promise<void> {
     const fields = getFields(this)
-    Object.entries(data).map(([key, value]) => {
-      if (!fields.includes(key)) return
-
-      this[key] = value
-    })
+    const fieldData = Object.fromEntries(Object.entries(data).filter(([key]) => fields.includes(key.split('.')[0])))
+    objectAssign(this, fieldData)
     this.collectionRef().dataById[this.id] = this
   }
 
@@ -65,6 +63,10 @@ export class Instance {
     // eslint-disable-next-line
     delete this.collectionRef().dataById[this.id]
     // eslint-disable-next-line
+    if(this.parent !== null) delete this.collectionGroupRef().dataById[this.id]
+    // eslint-disable-next-line
     this.collectionRef().data.splice(index, 1)
+    // eslint-disable-next-line
+    if(this.parent !== null) this.collectionGroupRef().data.splice(index, 1)
   }
 }

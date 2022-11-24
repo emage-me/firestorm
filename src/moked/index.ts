@@ -1,6 +1,6 @@
-import { Firestorm } from './Firestorm'
+import Firestorm from './Firestorm'
 
-export default new Firestorm()
+export default Firestorm
 export { Collection } from './Collection'
 export { SubCollection } from './Subcollection'
 export { CollectionRepository } from './CollectionRepository'
