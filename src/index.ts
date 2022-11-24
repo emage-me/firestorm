@@ -16,8 +16,8 @@ const Firestorm = isMocked ? MokedFirestorm : RealFirestorm
 export default Firestorm
 
 const Collection = isMocked ? MokedCollection as unknown as typeof RealCollection : RealCollection
-const SubCollection = isMocked ? MokedSubCollection : RealSubCollection
-const CollectionRepository = isMocked ? MokedCollectionRepository : RealCollectionRepository
+const SubCollection = isMocked ? MokedSubCollection as unknown as typeof RealSubCollection : RealSubCollection
+const CollectionRepository = isMocked ? MokedCollectionRepository as unknown as typeof RealCollectionRepository : RealCollectionRepository
 const field = isMocked ? mokedField : realField
 const date = isMocked ? mokedDate : realDate
 const subCollection = isMocked ? mokedSubCollection : realSubCollection
