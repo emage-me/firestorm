@@ -30,7 +30,7 @@ describe('Firestorm query', () => {
       })
       it('returns the first model found', async () => {
         const dbModel = await Model.query().first()
-        expect(dbModel?.toFirestore()).toStrictEqual(modelProperties)
+        expect(dbModel).toStrictEqual(model)
       })
     })
     describe('without instance in database', () => {
@@ -48,7 +48,7 @@ describe('Firestorm query', () => {
       })
       it('returns the first model found', async () => {
         const dbModel = await Model.query().firstOrFail()
-        expect(dbModel.toFirestore()).toStrictEqual(modelProperties)
+        expect(dbModel).toStrictEqual(model)
       })
     })
     describe('without instance in database', () => {
@@ -70,7 +70,7 @@ describe('Firestorm query', () => {
       })
       it('returns the model found', async () => {
         const dbModels = await Model.query().where('label', '==', 'value').get()
-        expect(dbModels[0].toFirestore()).toStrictEqual(modelProperties)
+        expect(dbModels[0]).toStrictEqual(model)
       })
       describe('with many where', () => {
         it('found one model', async () => {

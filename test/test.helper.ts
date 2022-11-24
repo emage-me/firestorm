@@ -5,6 +5,7 @@ import { initializeTestEnvironment } from '@firebase/rules-unit-testing'
 const projectId = `emage-me-test-${Math.floor(Math.random() * 100000000)}`
 process.env.FIRESTORE_EMULATOR_HOST = 'localhost:8080'
 process.env.GCLOUD_PROJECT = projectId
+const isMocked = Boolean(process.env.FIRESTORM_MOCKED)
 
 const initTest = (): void => {
   admin.initializeApp()
@@ -13,9 +14,13 @@ const initTest = (): void => {
   firestorm.initialize(firestore)
 }
 
-initTest()
+if (!isMocked) initTest()
 
 export const clear = async (): Promise<void> => {
-  const testEnv = await initializeTestEnvironment({ projectId })
-  await testEnv.clearFirestore()
+  if (isMocked) {
+    firestorm.data = {}
+  } else {
+    const testEnv = await initializeTestEnvironment({ projectId })
+    await testEnv.clearFirestore()
+  }
 }

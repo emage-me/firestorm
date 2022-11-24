@@ -14,14 +14,10 @@ describe('Firebase', () => {
   })
 
   describe('date', () => {
-    describe('with empty date in db', () => {
-      beforeEach(async () => {
-        await Model.collectionRef().doc('1').set({})
-      })
+    describe('with empty date', () => {
       it('returns defaultDate', async () => {
-        const model = await Model.findOrFail('1')
+        const model = new Model({})
         expect(model.creationDate).toBeInstanceOf(Date)
-        expect(model.creationDate.getTime()).toBeGreaterThan(defaultDate.getTime())
       })
     })
   })

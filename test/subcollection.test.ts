@@ -32,8 +32,8 @@ describe('Firebase', () => {
     })
     describe('with parent collection ID', () => {
       beforeEach(async () => {
-        await Model.collectionRef().doc('1').collection('user').doc('1').set({ firstname: 'test' })
         model = new Model({ id: '1' })
+        await model.users().create({ id: '1', firstname: 'test' }).save()
       })
       describe('findOrFail', () => {
         it('returns a subcollection instance', async () => {
@@ -58,9 +58,8 @@ describe('Firebase', () => {
     })
     describe('with parent collection ID set after parent creation', () => {
       beforeEach(async () => {
-        await Model.collectionRef().doc('1').collection('user').doc('1').set({ firstname: 'test' })
-        model = new Model({})
-        model.id = '1'
+        model = new Model({ id: '1' })
+        await model.users().create({ id: '1', firstname: 'test' }).save()
       })
       describe('findOrFail', () => {
         it('returns a subcollection instance', async () => {

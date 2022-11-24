@@ -40,7 +40,7 @@ describe('Firebase', () => {
       model = new Model(modelData)
       await model.save()
       const dbModel = await Model.findOrFail(model.id)
-      expect(dbModel.data()).toStrictEqual(modelData)
+      expect(dbModel).toStrictEqual(model)
     })
     describe('when already exits', () => {
       beforeEach(async () => {
@@ -114,7 +114,7 @@ describe('Firebase', () => {
       })
       it('returns model properties', async () => {
         const dbModel = await Model.first()
-        expect(dbModel?.data()).toStrictEqual(modelData)
+        expect(dbModel).toStrictEqual(model)
       })
     })
     describe('without model existing', () => {
@@ -170,7 +170,7 @@ describe('Firebase', () => {
       })
       it('returns model properties', async () => {
         const dbModel = await Model.find(model.id)
-        expect(dbModel?.data()).toStrictEqual(modelData)
+        expect(dbModel).toStrictEqual(model)
       })
     })
     describe('without model existing', () => {
@@ -241,7 +241,7 @@ describe('Firebase', () => {
       })
       it('returns model properties', async () => {
         const dbModel = await Model.findBy('label', model.label)
-        expect(dbModel?.data()).toStrictEqual(modelData)
+        expect(dbModel).toStrictEqual(model)
       })
     })
     describe('without model existing', () => {
