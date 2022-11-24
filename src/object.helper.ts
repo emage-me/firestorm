@@ -11,3 +11,6 @@ export const objectAssign = (target: any, source: any): void => {
     ref[last] = value
   })
 }
+
+export const get = (t: any, path: string): any =>
+  path.split('.').reduce((r, k) => r?.[k], t)
