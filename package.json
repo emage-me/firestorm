@@ -1,6 +1,6 @@
 {
   "name": "@emage-me/firestorm",
-  "version": "0.8.0",
+  "version": "0.9.1",
   "description": "Firestore ORM",
   "main": "lib/src/index.js",
   "types": "lib/src/index.d.ts",
@@ -39,7 +39,7 @@
     "@firebase/rules-unit-testing": "^2.0.1",
     "@types/jest": "^27.0.2",
     "firebase": "^9.5.0",
-    "firebase-admin": "^10.0.0",
+    "firebase-admin": "^11.3.0",
     "jest": "^27.3.1",
     "ts-jest": "^27.0.7",
     "ts-standard": "^10.0.0",
