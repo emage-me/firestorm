@@ -6,6 +6,7 @@ class Model extends Collection {
   static collectionName: string = 'model'
   @field() label: string
   @field() count: number
+  @field() obj: {values: string[], count: number}
 }
 
 describe('Firestorm query', () => {
@@ -65,12 +66,24 @@ describe('Firestorm query', () => {
   describe('where', () => {
     describe('with a model in firebase', () => {
       beforeEach(async () => {
-        model = new Model(modelProperties)
+        model = new Model({ ...modelProperties, obj: { values: ['value'], count: 1 } })
         await model.save()
       })
-      it('returns the model found', async () => {
-        const dbModels = await Model.query().where('label', '==', 'value').get()
-        expect(dbModels[0]).toStrictEqual(model)
+      describe('with == operation', () => {
+        it('returns the model found', async () => {
+          const dbModels = await Model.query().where('label', '==', 'value').get()
+          expect(dbModels[0]).toStrictEqual(model)
+        })
+        it('returns the model found', async () => {
+          const dbModels = await Model.query().where('obj.count', '==', 1).get()
+          expect(dbModels[0]).toStrictEqual(model)
+        })
+      })
+      describe('with array-contains operation', () => {
+        it('returns the model found', async () => {
+          const dbModels = await Model.query().where('obj.values', 'array-contains', 'value').get()
+          expect(dbModels[0]).toStrictEqual(model)
+        })
       })
       describe('with many where', () => {
         it('found one model', async () => {
