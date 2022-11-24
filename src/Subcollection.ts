@@ -1,4 +1,4 @@
-import { CollectionRepository } from '.'
+import { CollectionRepository } from './CollectionRepository'
 import firestorm from './'
 import { Instance } from './Instance'
 import { FirestormQuery } from './Query'
