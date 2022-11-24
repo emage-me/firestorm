@@ -1,3 +1,4 @@
+import { get } from '../object.helper'
 import { Instance } from './Instance'
 
 export class FirestormQuery<T extends typeof Instance> {
@@ -25,9 +26,17 @@ export class FirestormQuery<T extends typeof Instance> {
     return instance
   }
 
-  public where (fieldPath: string, WhereFIlterOp, value: any): FirestormQuery<T> {
-    // add WhereFIlterOp case
-    this.query = this.query.filter(item => item[fieldPath] === value)
+  public where (fieldPath: string, WhereFilterOp: string, value: any): FirestormQuery<T> {
+    switch (WhereFilterOp) {
+      case '==':
+        this.query = this.query.filter(item => get(item, fieldPath) === value)
+        break
+      case 'array-contains':
+        this.query = this.query.filter(item => (get(item, fieldPath) ?? []).includes(value))
+        break
+      default:
+        throw new Error(`WhereFIlterOp ${WhereFilterOp} not implemented in firestrom mock`)
+    }
     return this
   }
 
