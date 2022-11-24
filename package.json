@@ -6,6 +6,7 @@
   "types": "lib/src/index.d.ts",
   "scripts": {
     "test": "jest",
+    "test-mock": "export FIRESTORM_MOCKED=&&yarn test&&export FIRESTORM_MOCKED=true&&yarn test",
     "login": "npm login --scope=@emage-me",
     "build": "tsc",
     "publish": "npm publish --access public",
