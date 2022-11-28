@@ -3,6 +3,7 @@ import { Collection, field, date } from '../src'
 
 interface Field {
   label: string
+  obj: { count: number }
 }
 
 class Model extends Collection {
@@ -65,6 +66,11 @@ describe('Firebase', () => {
       const dbModel = await Model.findOrFail(model.id)
       expect(dbModel.label).toBe('otherValue')
     })
+    it('updates model in firebase', async () => {
+      await model.set({ ...modelData, 'field.label': 'value' })
+      const dbModel = await Model.findOrFail(model.id)
+      expect(dbModel.field.label).toBe('value')
+    })
   })
   describe('update', () => {
     beforeEach(async () => {
@@ -85,9 +91,14 @@ describe('Firebase', () => {
       // eslint-disable-next-line
       expect(model['otherLabel']).toBe(undefined)
     })
+    it('updates model in firebase', async () => {
+      await model.update({ 'field.obj.count': 1 })
+      const dbModel = await Model.findOrFail(model.id)
+      expect(dbModel.field.obj.count).toBe(1)
+    })
     it('updates only firebase field', async () => {
-      await model.update({ 'field.label': 'name' })
-      expect(model.field.label).toBe('name')
+      await model.update({ 'field.obj.count': 1 })
+      expect(model.field.obj.count).toBe(1)
     })
   })
   describe('delete', () => {
