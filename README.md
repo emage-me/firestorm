@@ -27,7 +27,6 @@ class User extends Collection {
   static collectionName: string = 'user'
   @field() firstName: string
   @field() lastName: string
-  fullName: string
 
   get fullName() {
     return `${firstName} ${lastName.toUpperCase()}`    
@@ -152,7 +151,7 @@ await User.query
 
 ## Subcollection définition
 ```javascript
-import { Collection, Subcollection, CollectionRepository, field, subCollection } from '@emage-me/firestorm'
+import { Collection, Subcollection, CollectionRepositoryType, field, subCollection } from '@emage-me/firestorm'
 
 class User extends SubCollection {
   static collectionName: string = 'user'
@@ -163,7 +162,7 @@ class User extends SubCollection {
 class App extends Collection {
   static collectionName: string = 'app'
   @field() name: string
-  @subCollection(User) users: () => CollectionRepository<typeof User>
+  @subCollection(User) users: () => CollectionRepositoryType<typeof User>
 }
 ```
 
@@ -273,5 +272,5 @@ Used to retrive a JS Date Object instead of a firebaseTimestamp
 ## SubCollection
 Used to add a subCollection 
 ```javascript
-@subCollection(User) users: () => CollectionRepository<typeof User>
+@subCollection(User) users: () => CollectionRepositoryType<typeof User>
 ```
