@@ -1,0 +1,8 @@
+import './env.ts'
+import './collection.test'
+import './date.test'
+import './firestorm.test'
+import './instance.test'
+import './object.helper.test'
+import './query.test'
+import './subcollection.test'
