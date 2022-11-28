@@ -43,12 +43,14 @@ export class Instance {
   }
 
   public async set (data): Promise<void> {
+    const fieldData: any = {}
+    objectAssign(fieldData, data)
     if (this.collectionRef().dataById[this.id] === undefined) {
-      this.collectionRef().data.push(data)
-      if (this.parent !== null) this.collectionGroupRef().data.push(data)
+      this.collectionRef().data.push(fieldData)
+      if (this.parent !== null) this.collectionGroupRef().data.push(fieldData)
     }
-    this.collectionRef().dataById[this.id] = data
-    if (this.parent !== null) this.collectionGroupRef().dataById[this.id] = data
+    this.collectionRef().dataById[this.id] = fieldData
+    if (this.parent !== null) this.collectionGroupRef().dataById[this.id] = fieldData
   }
 
   public async update (data): Promise<void> {

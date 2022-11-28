@@ -13,15 +13,15 @@ export class FirestormQuery<T extends typeof Instance> {
   }
 
   public async get (): Promise<Array<InstanceType<T>>> {
-    return this.query
+    return this.queryConvertor(this.query)
   }
 
   public async first (): Promise<InstanceType<T>|undefined> {
-    return this.query[0]
+    return this.queryConvertor(this.query)[0]
   }
 
   public async firstOrFail (errorMessage?: string): Promise<InstanceType<T>> {
-    const instance = this.query[0]
+    const instance = this.queryConvertor(this.query)[0]
     if (instance === undefined) throw new Error(errorMessage ?? 'No instance found')
     return instance
   }
@@ -82,5 +82,14 @@ export class FirestormQuery<T extends typeof Instance> {
     if (id != null) this.startAt(id)
     if (limit != null) this.limit(limit)
     return this
+  }
+
+  private queryConvertor (items: any[]): Array<InstanceType<T>> {
+    return items.map(item => this.fromSnapshot(item))
+  }
+
+  public fromSnapshot (item: any): InstanceType<T> {
+    const instance = new this.InstanceConstuctor(item, item?.parent) as InstanceType<T>
+    return instance
   }
 }

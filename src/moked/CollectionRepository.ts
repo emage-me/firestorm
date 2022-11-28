@@ -30,7 +30,7 @@ export class CollectionRepository<T extends typeof Instance> {
 
   public async find (id: string): Promise<InstanceType<T>|undefined> {
     const document = await this.collectionRef.dataById[id]
-    return document
+    return this.documentConvertor(document)
   }
 
   public async findOrFail (id: string, errorMessage?: string): Promise<InstanceType<T>> {
@@ -58,8 +58,15 @@ export class CollectionRepository<T extends typeof Instance> {
   }
 
   public async findByIds (ids: string[]): Promise<Array<InstanceType<T>>> {
-    const items = ids.map(id => this.collectionRef.dataById[id])
-      .filter(value => value !== undefined)
+    const items = ids
+      .map(id => this.collectionRef.dataById[id])
+      .filter(item => item !== undefined)
+      .map(item => this.query.fromSnapshot(item))
     return items
+  }
+
+  private documentConvertor (item: any): InstanceType<T>|undefined {
+    if (item !== undefined) return this.query.fromSnapshot(item)
+    return undefined
   }
 }
