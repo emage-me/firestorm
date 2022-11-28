@@ -1,5 +1,5 @@
 import { clear } from './test.helper'
-import { Collection, SubCollection, CollectionRepository, field, date, subCollection } from '../src'
+import { Collection, SubCollection, field, date, subCollection, CollectionRepositoryType } from '../src'
 
 class User extends SubCollection {
   static collectionName: string = 'user'
@@ -12,7 +12,7 @@ class Model extends Collection {
   @field() label: string
   @field() count: number
   @date() creationDate: Date
-  @subCollection(User) users: () => CollectionRepository<typeof User>
+  @subCollection(User) users: () => CollectionRepositoryType<typeof User>
 }
 
 describe('Firebase', () => {
