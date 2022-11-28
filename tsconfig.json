@@ -5,6 +5,7 @@
     "esModuleInterop": true,
     "outDir": "lib",
     "declaration": true,
+    "skipLibCheck": true
   },
   "include": [
     "src", "test"
