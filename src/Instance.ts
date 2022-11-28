@@ -45,7 +45,9 @@ export class Instance {
   }
 
   public async set (data): Promise<void> {
-    await this.collectionRef().doc(this.id).set(data)
+    const fieldData = {}
+    objectAssign(fieldData, data)
+    await this.collectionRef().doc(this.id).set(fieldData)
   }
 
   public async update (data): Promise<void> {
