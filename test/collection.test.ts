@@ -77,9 +77,14 @@ describe('Firebase', () => {
       model = new Model(modelData)
       await model.save()
     })
-    it('updates model in firebase', async () => {
+    it('updates model in firebase object by id', async () => {
       await model.update({ ...modelData, label: 'otherValue' })
       const dbModel = await Model.findOrFail(model.id)
+      expect(dbModel.label).toBe('otherValue')
+    })
+    it('updates model in firebase array', async () => {
+      await model.update({ ...modelData, label: 'otherValue' })
+      const dbModel = await Model.firstOrFail()
       expect(dbModel.label).toBe('otherValue')
     })
     it('updates the instance', async () => {
