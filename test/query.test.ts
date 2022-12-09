@@ -79,6 +79,26 @@ describe('Firestorm query', () => {
           expect(dbModels[0]).toStrictEqual(model)
         })
       })
+      describe('with >= operation', () => {
+        it('returns the model found', async () => {
+          const dbModels = await Model.query().where('obj.count', '>=', 0).get()
+          expect(dbModels[0]).toStrictEqual(model)
+        })
+        it('returns the model found', async () => {
+          const dbModels = await Model.query().where('obj.count', '>=', 0).get()
+          expect(dbModels[0]).toStrictEqual(model)
+        })
+      })
+      describe('with <= operation', () => {
+        it('returns the model found', async () => {
+          const dbModels = await Model.query().where('obj.count', '<=', 2).get()
+          expect(dbModels[0]).toStrictEqual(model)
+        })
+        it('returns the model found', async () => {
+          const dbModels = await Model.query().where('obj.count', '<=', 2).get()
+          expect(dbModels[0]).toStrictEqual(model)
+        })
+      })
       describe('with array-contains operation', () => {
         it('returns the model found', async () => {
           const dbModels = await Model.query().where('obj.values', 'array-contains', 'value').get()
