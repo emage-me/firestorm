@@ -56,8 +56,9 @@ export class Instance {
   public async update (data): Promise<void> {
     const fields = getFields(this)
     const fieldData = Object.fromEntries(Object.entries(data).filter(([key]) => fields.includes(key.split('.')[0])))
-    objectAssign(this, fieldData)
-    this.collectionRef().dataById[this.id] = this
+    const ref = this.collectionRef().dataById[this.id]
+    objectAssign(ref, fieldData)
+    Object.assign(this, ref)
   }
 
   public async delete (): Promise<void> {
