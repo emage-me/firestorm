@@ -16,6 +16,10 @@ export class FirestormQuery<T extends typeof Instance> {
     return this.queryConvertor(this.query)
   }
 
+  public async count (): Promise<Number> {
+    return this.query.length
+  }
+
   public async first (): Promise<InstanceType<T>|undefined> {
     return this.queryConvertor(this.query)[0]
   }
