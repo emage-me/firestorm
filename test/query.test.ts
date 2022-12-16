@@ -201,4 +201,18 @@ describe('Firestorm query', () => {
       expect(dbModels.length).toStrictEqual(1)
     })
   })
+  describe('count', () => {
+    beforeEach(async () => {
+      model = new Model(modelProperties)
+      otherModel = new Model(modelProperties)
+      await Promise.all([
+        model.save(),
+        otherModel.save()
+      ])
+    })
+    it('returns 2', async () => {
+      const count = await Model.query().count()
+      expect(count).toStrictEqual(2)
+    })
+  })
 })
