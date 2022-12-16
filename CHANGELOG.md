@@ -1,3 +1,7 @@
+## [0.10.0] 16-12-2022
+### added
+- count on query
+
 ## [0.8.0] 13-07-2022
 ### added
 - dot notation support for update
