@@ -17,7 +17,7 @@ export class FirestormQuery<T extends typeof Instance> {
     return this.queryConvertor(query)
   }
 
-  public async count (): Promise<Number> {
+  public async count (): Promise<number> {
     const snapShot = await this.query.count().get()
     return snapShot.data().count
   }
