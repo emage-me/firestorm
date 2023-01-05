@@ -34,6 +34,14 @@ describe('Firebase', () => {
       model = new Model({})
       expect(model.count).toBe(0)
     })
+
+    it('deep copy initial value', async () => {
+      const otherModel = new Model({})
+      otherModel.field.label = 'toto'
+      model = new Model({})
+
+      expect(model.field.label).toBe(undefined)
+    })
   })
 
   describe('save', () => {
