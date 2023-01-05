@@ -1,5 +1,6 @@
 import 'reflect-metadata'
 import { SubCollection } from '.'
+import cloneDeep from 'lodash.clonedeep'
 
 const fields = Symbol('fields')
 const defaultValues = Symbol('defaultValues')
@@ -35,7 +36,7 @@ export function getdefaultValue (target: any): Array<[string, any]> {
   const defaultValueKeys = Reflect.getMetadataKeys(target, defaultValues)
 
   return defaultValueKeys.map((key) => {
-    const defaultValue = Reflect.getMetadata(key, target, defaultValues)
+    const defaultValue = cloneDeep(Reflect.getMetadata(key, target, defaultValues))
     return [key, defaultValue]
   })
 }
