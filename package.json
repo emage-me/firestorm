@@ -33,6 +33,7 @@
   "homepage": "https://github.com/emage-me/firestorm#readme",
   "dependencies": {
     "@firebase/firestore-types": "^2.5.1",
+    "lodash.clonedeep": "^4.5.0",
     "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
