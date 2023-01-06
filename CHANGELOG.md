@@ -1,3 +1,7 @@
+## [0.10.2] 06-01-2023
+### fixed
+- default value référence
+
 ## [0.10.0] 16-12-2022
 ### added
 - count on query
