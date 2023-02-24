@@ -59,6 +59,8 @@ export class CollectionRepository<T extends typeof Instance> {
   }
 
   public async findByIds (ids: string[]): Promise<Array<InstanceType<T>>> {
+    if (ids.length === 0) return []
+
     const refs = ids.map(id => this.collectionRef.doc(id))
     const docs = await this.collectionRef.firestore.getAll(...refs)
     const intances: Array<InstanceType<T>> = []
