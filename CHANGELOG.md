@@ -1,3 +1,8 @@
+
+## [0.10.3] 24-02-2023
+### fixed
+- findByIds with empty array
+
 ## [0.10.2] 06-01-2023
 ### fixed
 - default value référence
