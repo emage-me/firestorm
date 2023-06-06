@@ -37,6 +37,7 @@ jobs:
           git push
   build:
     runs-on: ubuntu-latest
+    needs: update-changelog-and-package
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
