@@ -19,5 +19,6 @@ export class SubCollection extends Instance {
     return (new CollectionRepository<T>(this, null)).query
   }
 
+  public static async findByIds<T extends typeof Instance> (this: T, ids: string[]): Promise<Array<InstanceType<T>>> { return await (new CollectionRepository<T>(this, null)).findByIds(ids) }
   public static async findAllBy<T extends typeof Instance> (this: T, field: string, value: string | boolean): Promise<Array<InstanceType<T>>> { return await (new CollectionRepository<T>(this, null)).findAllBy(field, value) }
 }
