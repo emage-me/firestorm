@@ -19,6 +19,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
       - run: npm install -g firebase-tools
       - name: Cache firebase emulators
         uses: actions/cache@v2
