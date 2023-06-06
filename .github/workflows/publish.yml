@@ -11,6 +11,7 @@ jobs:
         with:
           node-version: '18.16.0'
           registry-url: 'https://registry.npmjs.org'
+          scope: '@emage-me'
       - run: |
           yarn build
           yarn login
