@@ -96,6 +96,40 @@ describe('Firebase', () => {
         })
       })
     })
+    describe('findByIds', () => {
+      describe('with model existing', () => {
+        let otherModel: Model
+
+        beforeEach(async () => {
+          model = new Model({ id: '1' })
+          otherModel = new Model({ id: '2' })
+          await Promise.all([
+            model.save(),
+            otherModel.save()
+          ])
+        })
+        it('returns instance of model', async () => {
+          const dbModels = await Model.findByIds([model.id, otherModel.id])
+          expect(dbModels[0]).toBeInstanceOf(Model)
+        })
+        it('returns two models', async () => {
+          const dbModels = await Model.findByIds([model.id, otherModel.id])
+          expect(dbModels.length).toBe(2)
+        })
+      })
+      describe('without model existing', () => {
+        it('returns an empty array', async () => {
+          const dbModels = await Model.findByIds(['fakeId'])
+          expect(dbModels).toStrictEqual([])
+        })
+      })
+      describe('without an empty array', () => {
+        it('returns an empty array', async () => {
+          const dbModels = await Model.findByIds([])
+          expect(dbModels).toStrictEqual([])
+        })
+      })
+    })
     describe('query', () => {
       describe('where', () => {
         let firstName: string
