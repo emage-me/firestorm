@@ -1,3 +1,6 @@
+# Unreleased
+### added
+- findByIds for subcollections
 
 ## [0.10.3] 24-02-2023
 ### fixed
