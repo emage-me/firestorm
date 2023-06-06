@@ -46,7 +46,7 @@ jobs:
           scope: '@emage-me'
       - run: |
           yarn build
-          yarn login
-          yarn publish
+          yarn authenticate
+          yarn publish-package
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

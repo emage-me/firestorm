@@ -6,10 +6,10 @@
   "types": "lib/src/index.d.ts",
   "scripts": {
     "test": "jest",
-    "test-mock": "export FIRESTORM_MOCKED=&&yarn test&&export FIRESTORM_MOCKED=true&&yarn test",
-    "login": "npm login --scope=@emage-me",
+    "test-mock": "set FIRESTORM_MOCKED=&&yarn test&&set FIRESTORM_MOCKED=true&&yarn test",
+    "authenticate": "npm login --scope=@emage-me",
     "build": "tsc",
-    "publish": "npm publish --access public",
+    "publish-package": "npm publish --access public",
     "test-all": "yarn ts-standard && jest",
     "test-init": "firebase emulators:start --only firestore"
   },
