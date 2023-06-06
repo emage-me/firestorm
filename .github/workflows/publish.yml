@@ -1,0 +1,53 @@
+name: Publish Package to npmjs
+on:
+  release:
+    types: [published]
+jobs:
+  update-changelog-and-package:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.16.0'
+
+      - name: Update Changelog
+        run: |
+          # Récupérer le nom du tag créé
+          TAG_NAME=$(git describe --tags --abbrev=0)
+
+          # Générer la date actuelle au format DD-MM-YYYY
+          CURRENT_DATE=$(date +'%d-%m-%Y')
+
+          # Remplacer "## [Unreleased]" par "## [tag] date" dans le fichier changelog
+          sed -i "s/## \[Unreleased\]/## [$TAG_NAME] $CURRENT_DATE/" CHANGELOG.md
+
+          # Mettre à jour la version dans le fichier package.json
+          sed -i "s/\"version\": \".*\"/\"version\": \"$TAG_NAME\"/" package.json
+
+          # Ajouter les modifications au commit
+          git add CHANGELOG.md
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git commit -m "Update changelog for tag $TAG_NAME" -a || true
+          git push
+  build:
+    runs-on: ubuntu-latest
+    needs: update-changelog-and-package
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.16.0'
+          registry-url: 'https://registry.npmjs.org'
+          scope: '@emage-me'
+      - run: |
+          yarn build
+          yarn authenticate
+          yarn publish-package
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
