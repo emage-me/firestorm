@@ -3,7 +3,7 @@ import firestorm from '../src'
 import { initializeTestEnvironment } from '@firebase/rules-unit-testing'
 
 const projectId = `emage-me-test-${Math.floor(Math.random() * 100000000)}`
-process.env.FIRESTORE_EMULATOR_HOST = 'localhost:8080'
+process.env.FIRESTORE_EMULATOR_HOST = '127.0.0.1:8080'
 process.env.GCLOUD_PROJECT = projectId
 const isMocked = Boolean(process.env.FIRESTORM_MOCKED)
 
