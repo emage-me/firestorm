@@ -14,15 +14,15 @@ jobs:
         node-version: [18.16.0]
 
     steps:
-      - name: Cache firebase emulators
-        uses: actions/cache@v2
-        with:
-          path: ~/.cache/firebase/emulators
-          key: ${{ runner.os }}-firebase-emulators-${{ hashFiles('~/.cache/firebase/emulators/**') }}
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install -g firebase-tools
-      - run: firebase emulators:exec --only firestore \"yarn test --exit & yarn test-mock\"
+      - name: Cache firebase emulators
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/firebase/emulators
+          key: ${{ runner.os }}-firebase-emulators-${{ hashFiles('~/.cache/firebase/emulators/**') }}
+      - run: firebase emulators:exec --only firestore "yarn test & yarn test-mock"
