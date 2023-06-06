@@ -28,8 +28,3 @@ jobs:
           key: ${{ runner.os }}-firebase-emulators-${{ hashFiles('~/.cache/firebase/emulators/**') }}
       - run: yarn install
       - run: firebase emulators:exec --only firestore "yarn test & yarn test-mock"
-      - name: Build and publish
-        if: github.ref == 'refs/heads/main'
-        run: |
-          yarn build
-          yarn publish
