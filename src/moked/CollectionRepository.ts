@@ -45,7 +45,7 @@ export class CollectionRepository<T extends typeof Instance> {
 
   public async findByOrFail (field: string, value: string, errorMessage?: string): Promise<InstanceType<T>> {
     const instance = await this.findBy(field, value)
-    if (instance === undefined) throw new Error(errorMessage ?? 'No instance found')
+    if (instance === undefined) throw new Error(errorMessage ?? `${field} ${value} not found in ${this.collection}`)
     return instance
   }
 

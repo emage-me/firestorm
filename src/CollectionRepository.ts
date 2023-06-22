@@ -30,11 +30,15 @@ export class CollectionRepository<T extends typeof Instance> {
   }
 
   public async find (id: string): Promise<InstanceType<T>|undefined> {
+    if (id === '') return undefined
+
     const document = await this.collectionRef.doc(id).get()
     return this.documentConvertor(document)
   }
 
   public async findOrFail (id: string, errorMessage?: string): Promise<InstanceType<T>> {
+    if (id === '') throw new Error(`Can't find without id in ${this.collection}`)
+
     const instance = await this.find(id)
     if (instance === undefined) throw new Error(errorMessage ?? `Id ${id} Not found in ${this.collection}`)
     return instance
@@ -46,7 +50,7 @@ export class CollectionRepository<T extends typeof Instance> {
 
   public async findByOrFail (field: string, value: string | boolean | number, errorMessage?: string): Promise<InstanceType<T>> {
     const instance = await this.findBy(field, value)
-    if (instance === undefined) throw new Error(errorMessage ?? 'No instance found')
+    if (instance === undefined) throw new Error(errorMessage ?? `${field} ${value.toString()} not found in ${this.collection}`)
     return instance
   }
 

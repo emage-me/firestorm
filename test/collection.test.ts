@@ -296,7 +296,7 @@ describe('Firebase', () => {
     })
     describe('without model existing', () => {
       it('throws an error', async () => {
-        await expect(Model.findByOrFail('label', model.label)).rejects.toThrow('No instance found')
+        await expect(Model.findByOrFail('label', model.label)).rejects.toThrow(`label ${model.label} not found in model`)
       })
       describe('with custom error message', () => {
         it('throws an custom error', async () => {
