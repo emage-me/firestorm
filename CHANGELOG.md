@@ -1,3 +1,7 @@
+## [Unreleased]
+### added
+- improve error
+
 ## [0.11.0] 06-06-2023
 ### added
 - findByIds for subcollections
