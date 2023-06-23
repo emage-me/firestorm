@@ -19,6 +19,7 @@ jobs:
 
       - name: Update Changelog
         run: |
+          git switch -
           # Récupérer le nom du tag créé
           TAG_NAME=$(git describe --tags --abbrev=0)
 
