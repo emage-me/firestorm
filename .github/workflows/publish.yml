@@ -10,7 +10,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.ref_name }}
+          ref: 'master'
 
       - name: Install Node.js
         uses: actions/setup-node@v3
@@ -19,7 +19,6 @@ jobs:
 
       - name: Update Changelog
         run: |
-          git switch -
           # Récupérer le nom du tag créé
           TAG_NAME=$(git describe --tags --abbrev=0)
 
@@ -33,7 +32,6 @@ jobs:
           sed -i "s/\"version\": \".*\"/\"version\": \"$TAG_NAME\"/" package.json
 
           # Ajouter les modifications au commit
-          git add CHANGELOG.md
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
           git commit -m "Update changelog for tag $TAG_NAME" -a || true
