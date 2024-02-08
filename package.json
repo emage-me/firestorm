@@ -1,6 +1,6 @@
 {
   "name": "@emage-me/firestorm",
-  "version": "0.12.4",
+  "version": "0.12.5",
   "description": "Firestore ORM",
   "main": "lib/src/index.js",
   "types": "lib/src/index.d.ts",
