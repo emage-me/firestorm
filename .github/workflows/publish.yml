@@ -48,6 +48,7 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
           scope: '@emage-me'
       - run: |
+          yarn install
           yarn build
           yarn authenticate
           yarn publish-package
