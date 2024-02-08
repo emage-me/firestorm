@@ -1,4 +1,4 @@
-## [Unreleased]
+## [0.12.0] 08-02-2024
 ### added
 - improve error
 
