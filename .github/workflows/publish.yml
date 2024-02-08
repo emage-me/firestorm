@@ -50,7 +50,7 @@ jobs:
       - run: |
           yarn install
           yarn build
-          npm ci
+          npm login --scope=@emage-me
           yarn publish-package
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
