@@ -2,13 +2,13 @@ import { get } from '../object.helper'
 import { Instance } from './Instance'
 
 export class FirestormQuery<T extends typeof Instance> {
-  InstanceConstuctor: new(data: any, parent: any) => T
+  InstanceConstructor: new(data: any, parent: any) => T
   query: any[]
   parent: any
 
   constructor (model, parent, data) {
     this.query = data
-    this.InstanceConstuctor = model
+    this.InstanceConstructor = model
     this.parent = parent
   }
 
@@ -99,7 +99,7 @@ export class FirestormQuery<T extends typeof Instance> {
   }
 
   public fromSnapshot (item: any): InstanceType<T> {
-    const instance = new this.InstanceConstuctor(item, item?.parent) as InstanceType<T>
+    const instance = new this.InstanceConstructor(item, item?.parent) as InstanceType<T>
     return instance
   }
 }

@@ -1,6 +1,6 @@
 import { objectAssign } from '../object.helper'
 import { CollectionRepository } from './CollectionRepository'
-import { getdefaultValue, getSubcollections, getFields } from './decorators'
+import { getdefaultValue, getSubcollections, getFields, getObjects } from './decorators'
 import { CollectionReference } from './types'
 
 export class Instance {
@@ -20,6 +20,9 @@ export class Instance {
         if (this.id == null) throw new Error('SubCollection require parent collection ID')
         return new CollectionRepository(subCollection, this)
       }
+    }
+    for (const [key, ObjectClass] of getObjects(this)) {
+      this[key] = new ObjectClass(this[key] ?? {})
     }
   }
 
