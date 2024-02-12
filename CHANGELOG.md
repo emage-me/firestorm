@@ -1,3 +1,9 @@
+## [0.13.0] 08-02-2024
+### added
+- sub object
+### changed
+- improve documentation
+
 ## [0.12.0] 08-02-2024
 ### added
 - improve error
