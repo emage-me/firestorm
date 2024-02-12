@@ -69,4 +69,3 @@ export function getObjects (target: any): Array<[string, any]> {
     return [key, ObjectClass]
   })
 }
-
