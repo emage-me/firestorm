@@ -2,13 +2,13 @@ import { Instance } from './Instance'
 import { Query, QuerySnapshot, DocumentSnapshot, FieldPath } from './types'
 
 export class FirestormQuery<T extends typeof Instance> {
-  InstanceConstuctor: new(data: any, parent: any) => T
+  InstanceConstructor: new(data: any, parent: any) => T
   query: Query
   parent: any
 
   constructor (model, parent, collectionRef) {
     this.query = collectionRef
-    this.InstanceConstuctor = model
+    this.InstanceConstructor = model
     this.parent = parent
   }
 
@@ -79,7 +79,7 @@ export class FirestormQuery<T extends typeof Instance> {
   public fromSnapshot (documentSnapShot: DocumentSnapshot): InstanceType<T> {
     const parentId = documentSnapShot.ref.parent.parent?.id
     const parent = this.parent ?? (parentId != null ? { id: parentId } : undefined)
-    const instance = new this.InstanceConstuctor(
+    const instance = new this.InstanceConstructor(
       {
         id: documentSnapShot.id,
         ...documentSnapShot.data()

@@ -1,5 +1,5 @@
 import { CollectionRepository } from './CollectionRepository'
-import { getDates, getdefaultValue, getFields, getSubcollections } from './decorators'
+import { getDates, getdefaultValue, getFields, getSubcollections, getObjects } from './decorators'
 import { CollectionReference, DocumentReference } from './types'
 import { objectAssign } from './object.helper'
 
@@ -22,6 +22,9 @@ export class Instance {
         if (this.id == null) throw new Error('SubCollection require parent collection ID')
         return new CollectionRepository(subCollection, this)
       }
+    }
+    for (const [key, ObjectClass] of getObjects(this)) {
+      this[key] = new ObjectClass(this[key] ?? {})
     }
   }
 
@@ -67,6 +70,10 @@ export class Instance {
       return object
     }
     , {})
+
+    getObjects(this).map(([key]) => {
+      object[key] = this[key].toFirestore()
+    })
     return object
   }
 

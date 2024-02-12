@@ -6,6 +6,7 @@ const fields = Symbol('fields')
 const defaultValues = Symbol('defaultValues')
 const dates = Symbol('dates')
 const subCollections = Symbol('subCollections')
+const objects = Symbol('objects')
 
 export function field (defaultValue?: any) {
   return function (target: any, propertyKey: string) {
@@ -19,6 +20,12 @@ export function date (defaultValue?: any) {
     Reflect.defineMetadata(propertyKey, propertyKey, target, fields)
     Reflect.defineMetadata(propertyKey, propertyKey, target, dates)
     if (defaultValue !== undefined) Reflect.defineMetadata(propertyKey, defaultValue, target, defaultValues)
+  }
+}
+
+export function object (ObjectClass: any) {
+  return function (target: any, propertyKey: string) {
+    Reflect.defineMetadata(propertyKey, ObjectClass, target, objects)
   }
 }
 
@@ -53,3 +60,13 @@ export function getSubcollections (target: any): Array<[string, typeof SubCollec
     return [key, subcollection]
   })
 }
+
+export function getObjects (target: any): Array<[string, any]> {
+  const collectionKeys = Reflect.getMetadataKeys(target, objects)
+
+  return collectionKeys.map((key) => {
+    const ObjectClass = Reflect.getMetadata(key, target, objects)
+    return [key, ObjectClass]
+  })
+}
+
