@@ -1,6 +1,6 @@
 import { objectAssign } from '../object.helper'
 import { CollectionRepository } from './CollectionRepository'
-import { getdefaultValue, getSubcollections, getFields, getObjects } from './decorators'
+import { getdefaultValue, getSubcollections, getFields, getObjects, getArrays } from './decorators'
 import { CollectionReference } from './types'
 
 export class Instance {
@@ -23,6 +23,9 @@ export class Instance {
     }
     for (const [key, ObjectClass] of getObjects(this)) {
       this[key] = new ObjectClass(this[key] ?? {})
+    }
+    for (const [key, ObjectClass] of getArrays(this)) {
+      this[key] = (this[key] ?? []).map(object => new ObjectClass(object))
     }
   }
 
