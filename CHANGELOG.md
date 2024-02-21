@@ -1,4 +1,4 @@
-## [Unreleased]
+## [0.14.0] 21-02-2024
 ### added
 - sub object array
 
