@@ -1,5 +1,5 @@
 import { CollectionRepository } from './CollectionRepository'
-import { getDates, getdefaultValue, getFields, getSubcollections, getObjects } from './decorators'
+import { getDates, getdefaultValue, getFields, getSubcollections, getObjects, getArrays } from './decorators'
 import { CollectionReference, DocumentReference } from './types'
 import { objectAssign } from './object.helper'
 
@@ -25,6 +25,9 @@ export class Instance {
     }
     for (const [key, ObjectClass] of getObjects(this)) {
       this[key] = new ObjectClass(this[key] ?? {})
+    }
+    for (const [key, ObjectClass] of getArrays(this)) {
+      this[key] = (this[key] ?? []).map(object => new ObjectClass(object))
     }
   }
 
@@ -73,6 +76,9 @@ export class Instance {
 
     getObjects(this).map(([key]) => {
       object[key] = this[key].toFirestore()
+    })
+    getArrays(this).map(([key]) => {
+      object[key] = (this[key] ?? []).map(object => object.toFirestore())
     })
     return object
   }
