@@ -22,7 +22,7 @@ describe('Firebase', () => {
 
   describe('object', () => {
     describe('with empty subObject', () => {
-      it.only('returns a SubObject instance', async () => {
+      it('returns a SubObject instance', async () => {
         const model = new Model({})
         expect(model.subObject).toBeInstanceOf(SubObject)
         expect(model.subObject.field).toBe('test')
