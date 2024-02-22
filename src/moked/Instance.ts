@@ -61,7 +61,20 @@ export class Instance {
 
   public async update (data): Promise<void> {
     const fields = getFields(this)
-    const fieldData = Object.fromEntries(Object.entries(data).filter(([key]) => fields.includes(key.split('.')[0])))
+    const objects = getObjects(this)
+    const arrays = getArrays(this)
+    const objectFields = objects.map(([key]) => key)
+    const arraysFields = arrays.map(([key]) => key)
+
+    const allFields = fields.concat(objectFields).concat(arraysFields)
+    const fieldData = Object.fromEntries(
+      Object.entries(data)
+        .filter(([key]) => allFields.includes(key.split('.')[0]))
+        .map(([key, value]: [string, any]) => {
+          if (objectFields.includes(key)) return [key, value.toFirestore != null ? value.toFirestore() : value]
+          if (arraysFields.includes(key)) return [key, value.map(object => object.toFirestore != null ? object.toFirestore() : object)]
+          return [key, value]
+        }))
     const ref = this.collectionRef().dataById[this.id]
     objectAssign(ref, fieldData)
     Object.assign(this, ref)

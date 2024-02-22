@@ -38,8 +38,7 @@ describe('Firebase', () => {
         expect(model.subObject.field).toBe(field)
         expect(model.subObject.otherField).toBe(otherField)
       })
-
-      describe('with filled subObject', () => {
+      describe('save', () => {
         it('save the SubObject', async () => {
           const field = 'field'
           const otherField = 'otherField'
@@ -48,6 +47,38 @@ describe('Firebase', () => {
           expect(dbModel.subObject).toBeInstanceOf(SubObject)
           expect(dbModel.subObject.field).toBe(field)
           expect(dbModel.subObject.otherField).toBe(otherField)
+        })
+      })
+      describe('update', () => {
+        let model: Model
+        beforeEach(async () => {
+          const field = 'field'
+          model = await new Model({ subObject: { field } }).save()
+        })
+        describe('with plain object', () => {
+          let payload: any
+          const field = 'field2'
+          beforeEach(async () => {
+            payload = { subObject: { field } }
+          })
+          it('update the SubObject', async () => {
+            await model.update(payload)
+            const dbModel = await Model.findOrFail(model.id)
+            expect(dbModel.subObject.field).toBe(field)
+          })
+        })
+        describe('with object', () => {
+          let payload: any
+          const field = 'field2'
+          beforeEach(async () => {
+            model.subObject.field = field
+            payload = { subObject: model.subObject }
+          })
+          it('update the SubObject', async () => {
+            await model.update(payload)
+            const dbModel = await Model.findOrFail(model.id)
+            expect(dbModel.subObject.field).toBe(field)
+          })
         })
       })
     })

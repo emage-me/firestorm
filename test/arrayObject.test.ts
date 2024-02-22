@@ -50,4 +50,36 @@ describe('Firebase', () => {
       })
     })
   })
+  describe('update', () => {
+    let model: Model
+    beforeEach(async () => {
+      const field = 'field'
+      model = await new Model({ subObjectArray: [{ field }] }).save()
+    })
+    describe('with plain object', () => {
+      let payload: any
+      const field = 'field2'
+      beforeEach(async () => {
+        payload = { subObjectArray: [{ field }] }
+      })
+      it('update the subObjectArray', async () => {
+        await model.update(payload)
+        const dbModel = await Model.findOrFail(model.id)
+        expect(dbModel.subObjectArray[0].field).toBe(field)
+      })
+    })
+    describe('with object', () => {
+      let payload: any
+      const field = 'field2'
+      beforeEach(async () => {
+        model.subObjectArray[0].field = field
+        payload = { subObjectArray: model.subObjectArray }
+      })
+      it('update the subObjectArray', async () => {
+        await model.update(payload)
+        const dbModel = await Model.findOrFail(model.id)
+        expect(dbModel.subObjectArray[0].field).toBe(field)
+      })
+    })
+  })
 })
