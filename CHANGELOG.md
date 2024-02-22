@@ -1,3 +1,7 @@
+## [0.14.1] 22-02-2024
+### fixed
+- sub object & sub object array update
+
 ## [0.14.0] 21-02-2024
 ### added
 - sub object array
