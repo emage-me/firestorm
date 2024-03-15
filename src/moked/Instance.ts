@@ -1,4 +1,4 @@
-import { objectAssign } from '../object.helper'
+import { objectAssign, removeEmpty } from '../object.helper'
 import { CollectionRepository } from './CollectionRepository'
 import { getdefaultValue, getSubcollections, getFields, getObjects, getArrays } from './decorators'
 import { CollectionReference } from './types'
@@ -13,7 +13,7 @@ export class Instance {
     for (const [key, defaultValue] of getdefaultValue(this)) {
       this[key] = defaultValue
     }
-    Object.assign(this, data)
+    Object.assign(this, removeEmpty(data))
     this.parent = parent
     for (const [key, subCollection] of getSubcollections(this)) {
       this[key] = function () {

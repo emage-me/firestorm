@@ -14,3 +14,7 @@ export const objectAssign = (target: any, source: any): void => {
 
 export const get = (t: any, path: string): any =>
   path.split('.').reduce((r, k) => r?.[k], t)
+
+export const removeEmpty = (obj: object): object => {
+  return Object.fromEntries(Object.entries(obj).filter(([_, v]) => v != null))
+}

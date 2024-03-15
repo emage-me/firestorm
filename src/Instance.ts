@@ -1,7 +1,7 @@
 import { CollectionRepository } from './CollectionRepository'
 import { getDates, getdefaultValue, getFields, getSubcollections, getObjects, getArrays } from './decorators'
 import { CollectionReference, DocumentReference } from './types'
-import { objectAssign } from './object.helper'
+import { objectAssign, removeEmpty } from './object.helper'
 
 export class Instance {
   ['constructor']: typeof Instance
@@ -15,7 +15,7 @@ export class Instance {
       this[key] = defaultValue
       if (datesKey.includes(key)) this[key] = new Date()
     }
-    Object.assign(this, data)
+    Object.assign(this, removeEmpty(data))
     this.parent = parent
     for (const [key, subCollection] of getSubcollections(this)) {
       this[key] = function () {

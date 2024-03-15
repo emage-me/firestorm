@@ -27,7 +27,6 @@ describe('Firebase', () => {
 
   describe('constructor', () => {
     it('returns collection instance', async () => {
-      // todo {label: null}
       model = new Model({})
       expect(model.label).toBe('')
     })
@@ -49,6 +48,14 @@ describe('Firebase', () => {
       // todo
 
       expect(model.field.label).toBe(model.field.label)
+    })
+    describe('with null value', () => {
+      beforeEach(async () => {
+        model = new Model({ label: null })
+      })
+      it('init default value', async () => {
+        expect(model.label).toBe('')
+      })
     })
   })
 
