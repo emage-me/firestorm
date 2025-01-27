@@ -1,4 +1,4 @@
-## [Unreleased]
+## [0.15.1] 27-01-2025
 ### fixed
 - in operator for mocked version
 
