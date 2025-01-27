@@ -44,6 +44,9 @@ export class FirestormQuery<T extends typeof Instance> {
       case 'array-contains':
         this.query = this.query.filter(item => (get(item, fieldPath) ?? []).includes(value))
         break
+      case 'in':
+        this.query = this.query.filter(item => value.includes(get(item, fieldPath)))
+        break
       default:
         throw new Error(`WhereFIlterOp ${WhereFilterOp} not implemented in firestrom mock`)
     }

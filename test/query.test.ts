@@ -105,6 +105,12 @@ describe('Firestorm query', () => {
           expect(dbModels[0]).toStrictEqual(model)
         })
       })
+      describe('with in operation', () => {
+        it('returns the model found', async () => {
+          const dbModels = await Model.query().where('label', 'in', ['value']).get()
+          expect(dbModels[0]).toStrictEqual(model)
+        })
+      })
       describe('with many where', () => {
         it('found one model', async () => {
           const dbModels = await Model.query()

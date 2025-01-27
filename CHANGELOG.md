@@ -1,6 +1,10 @@
+## [Unreleased]
+### fixed
+- in operator for mocked version
+
 ## [0.15.0] 15-03-2024
 ### added
-- default value on  null value
+- default value on null value
 
 ## [0.14.1] 22-02-2024
 ### fixed
