@@ -100,6 +100,12 @@ export class Instance {
     getDates(this).forEach(key => {
       if (this[key] != null && !(this[key] instanceof Date)) this[key] = this[key].toDate()
     })
+    getObjects(this).map(([key]) => {
+      this[key] = this[key].fromFirestore()
+    })
+    getArrays(this).map(([key]) => {
+      this[key] = (this[key] ?? []).map(object => object.fromFirestore())
+    })
     return this
   }
 
