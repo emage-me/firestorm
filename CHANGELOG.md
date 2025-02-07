@@ -1,3 +1,8 @@
+## [Unreleased]
+### fixed
+- @date in subObject and array of subObject
+- get only field define in collection from firebase
+
 ## [0.15.1] 27-01-2025
 ### fixed
 - in operator for mocked version
