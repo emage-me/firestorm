@@ -15,6 +15,18 @@ class Model extends Collection {
   @date() creationDate: Date
 }
 
+class Model2 extends Collection {
+  static collectionName: string = 'model'
+  @field(0) count: number
+  @field() isEmpty: boolean
+  @field({}) field: Field
+  @date() creationDate: Date
+
+  get label (): string {
+    return 'label2'
+  }
+}
+
 describe('Firebase', () => {
   const modelProperties = { label: 'value', count: 1, creationDate: new Date(), isEmpty: false, field: {} }
   const modelData = { id: '0', ...modelProperties }
@@ -210,6 +222,13 @@ describe('Firebase', () => {
       it('returns model properties', async () => {
         const dbModel = await Model.find(model.id)
         expect(dbModel).toStrictEqual(model)
+      })
+
+      describe('with a field in db but not in model', () => {
+        it('returns model properties', async () => {
+          const dbModel = await Model2.findOrFail(model.id)
+          expect(dbModel.label).toStrictEqual('label2')
+        })
       })
     })
     describe('without model existing', () => {

@@ -13,6 +13,17 @@ export class Instance {
     for (const [key, defaultValue] of getdefaultValue(this)) {
       this[key] = defaultValue
     }
+    const fields = getFields(this)
+    const objects = getObjects(this)
+    const arrays = getArrays(this)
+    const objectFields = objects.map(([key]) => key)
+    const arraysFields = arrays.map(([key]) => key)
+    const allFields = fields.concat(objectFields).concat(arraysFields).concat(['id'])
+
+    Object.keys(data).forEach(key => {
+      if (!allFields.includes(key)) delete data[key]
+    })
+
     Object.assign(this, removeEmpty(data))
     this.parent = parent
     for (const [key, subCollection] of getSubcollections(this)) {
