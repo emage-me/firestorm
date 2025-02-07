@@ -1,4 +1,4 @@
-## [Unreleased]
+## [0.15.2] 07-02-2025
 ### fixed
 - @date in subObject and array of subObject
 - get only field define in collection from firebase
