@@ -35,6 +35,9 @@ export class FirestormQuery<T extends typeof Instance> {
       case '==':
         this.query = this.query.filter(item => get(item, fieldPath) === value)
         break
+      case '!=':
+        this.query = this.query.filter(item => get(item, fieldPath) !== value)
+        break
       case '>=':
         this.query = this.query.filter(item => get(item, fieldPath) >= value)
         break
