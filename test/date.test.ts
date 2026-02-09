@@ -26,6 +26,20 @@ describe('Firebase', () => {
         expect(model.creationDate).toBeInstanceOf(Date)
       })
     })
+    describe('with a date object', () => {
+      it('returns the date', async () => {
+        const creationDate = new Date()
+        const model = new Model({ creationDate })
+        expect(model.creationDate).toBe(creationDate)
+      })
+    })
+    describe('with a string object', () => {
+      it('returns the date', async () => {
+        const creationDate = new Date().toISOString()
+        const model = new Model({ creationDate })
+        expect(model.creationDate).toBe(creationDate)
+      })
+    })
     describe('in a sub object', () => {
       it('returns defaultDate', async () => {
         const model = new Model({})
