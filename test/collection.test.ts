@@ -1,5 +1,6 @@
 import { clear } from './test.helper'
 import { Collection, field, date } from '../src'
+import { firestore } from 'firebase-admin'
 
 interface Field {
   label: string
@@ -109,7 +110,7 @@ describe('Firebase', () => {
   })
   describe('update', () => {
     beforeEach(async () => {
-      model = new Model(modelData)
+      model = new Model({ ...modelData, field: { obj: { count: 2 } } })
       await model.save()
     })
     it('updates model in firebase object by id', async () => {
@@ -139,6 +140,16 @@ describe('Firebase', () => {
     it('updates only firebase field', async () => {
       await model.update({ 'field.obj.count': 1 })
       expect(model.field.obj.count).toBe(1)
+    })
+    it('increment a number field', async () => {
+      await model.update({ count: firestore.FieldValue.increment(2) })
+      const dbModel = await Model.findOrFail(model.id)
+      expect(dbModel.count).toBe(3)
+    })
+    it('increment a number sub field', async () => {
+      await model.update({ 'field.obj.count': firestore.FieldValue.increment(1) })
+      const dbModel = await Model.findOrFail(model.id)
+      expect(dbModel.field.obj.count).toBe(3)
     })
   })
   describe('delete', () => {

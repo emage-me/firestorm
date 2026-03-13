@@ -66,6 +66,10 @@ describe('Firebase', () => {
             const dbModel = await Model.findOrFail(model.id)
             expect(dbModel.subObject.field).toBe(field)
           })
+          it('returns a SubObject instance', async () => {
+            await model.update(payload)
+            expect(model.subObject).toBeInstanceOf(SubObject)
+          })
         })
         describe('with object', () => {
           let payload: any

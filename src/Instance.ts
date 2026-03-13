@@ -73,6 +73,8 @@ export class Instance {
     const arrays = getArrays(this)
     const objectFields = objects.map(([key]) => key)
     const arraysFields = arrays.map(([key]) => key)
+    const objectFieldClass = objects.reduce((acc, field) => ({ ...acc, [field[0]]: field[1] }), {})
+    const arraysFieldClass = arrays.reduce((acc, field) => ({ ...acc, [field[0]]: field[1] }), {})
 
     const allFields = fields.concat(objectFields).concat(arraysFields)
     const fieldData = Object.fromEntries(
@@ -84,7 +86,15 @@ export class Instance {
           return [key, value]
         }))
     await this.collectionRef().doc(this.id).update(fieldData)
-    objectAssign(this, fieldData)
+
+    const fieldObjectData = Object.fromEntries(
+      Object.entries(fieldData).map(([key, value]: [string, any]) => {
+        if (objectFields.includes(key)) return [key, new objectFieldClass[key](value)]
+        if (arraysFields.includes(key)) return [key, value.map(object => new arraysFieldClass[key](object))]
+        return [key, value]
+      }))
+
+    objectAssign(this, fieldObjectData)
   }
 
   public async delete (): Promise<void> {

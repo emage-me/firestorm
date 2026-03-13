@@ -1,4 +1,4 @@
-import { objectAssign, removeEmpty } from '../object.helper'
+import { get, isIncrement, objectAssign, removeEmpty } from '../object.helper'
 import { CollectionRepository } from './CollectionRepository'
 import { getdefaultValue, getSubcollections, getFields, getObjects, getArrays } from './decorators'
 import { CollectionReference } from './types'
@@ -76,19 +76,30 @@ export class Instance {
     const arrays = getArrays(this)
     const objectFields = objects.map(([key]) => key)
     const arraysFields = arrays.map(([key]) => key)
+    const objectFieldClass = objects.reduce((acc, field) => ({ ...acc, [field[0]]: field[1] }), {})
+    const arraysFieldClass = arrays.reduce((acc, field) => ({ ...acc, [field[0]]: field[1] }), {})
 
     const allFields = fields.concat(objectFields).concat(arraysFields)
     const fieldData = Object.fromEntries(
       Object.entries(data)
         .filter(([key]) => allFields.includes(key.split('.')[0]))
         .map(([key, value]: [string, any]) => {
+          if (isIncrement(value)) return [key, get(this, key) as number + value.operand]
           if (objectFields.includes(key)) return [key, value.toFirestore != null ? value.toFirestore() : value]
           if (arraysFields.includes(key)) return [key, value.map(object => object.toFirestore != null ? object.toFirestore() : object)]
           return [key, value]
         }))
     const ref = this.collectionRef().dataById[this.id]
     objectAssign(ref, fieldData)
-    Object.assign(this, ref)
+
+    const fieldObjectData = Object.fromEntries(
+      Object.entries(fieldData).map(([key, value]: [string, any]) => {
+        if (objectFields.includes(key)) return [key, new objectFieldClass[key](value)]
+        if (arraysFields.includes(key)) return [key, value.map(object => new arraysFieldClass[key](object))]
+        return [key, value]
+      }))
+
+    Object.assign(this, fieldObjectData)
   }
 
   public async delete (): Promise<void> {

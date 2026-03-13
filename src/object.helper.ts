@@ -18,3 +18,7 @@ export const get = (t: any, path: string): any =>
 export const removeEmpty = (obj: object): object => {
   return Object.fromEntries(Object.entries(obj).filter(([_, v]) => v != null))
 }
+
+export const isIncrement = (value: any): boolean => {
+  return value?.methodName === 'FieldValue.increment'
+}
