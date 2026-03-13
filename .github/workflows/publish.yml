@@ -1,52 +1,59 @@
 name: Publish Package to npmjs
+
 on:
   release:
     types: [published]
+
 jobs:
   update-changelog-and-package:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          ref: 'main'
+          ref: main
 
       - name: Install Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '18.16.0'
 
-      - name: Update Changelog
+      - name: Update Changelog and Package Version
         run: |
-          # Récupérer le nom du tag créé
-          TAG_NAME=$(git describe --tags --abbrev=0)
-
-          # Générer la date actuelle au format DD-MM-YYYY
+          # Récupérer le dernier tag et enlever le 'v' si présent
+          TAG_NAME=$(git describe --tags --abbrev=0 | sed 's/^v//')
           CURRENT_DATE=$(date +'%d-%m-%Y')
 
-          # Remplacer "## [Unreleased]" par "## [tag] date" dans le fichier changelog
+          # Mettre à jour CHANGELOG.md
           sed -i "s/## \[Unreleased\]/## [$TAG_NAME] $CURRENT_DATE/" CHANGELOG.md
 
-          # Mettre à jour la version dans le fichier package.json
+          # Mettre à jour package.json
           sed -i "s/\"version\": \".*\"/\"version\": \"$TAG_NAME\"/" package.json
 
-          # Ajouter les modifications au commit
+          # Commit et push
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
-          git commit -m "Update changelog for tag $TAG_NAME" -a || true
+          git commit -am "Update changelog and version for $TAG_NAME" || true
           git push
-  build:
+
+  build-and-publish:
     runs-on: ubuntu-latest
     needs: update-changelog-and-package
+
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
         with:
           node-version: '18.16.0'
           registry-url: 'https://registry.npmjs.org'
           scope: '@emage-me'
+          cache: 'yarn'
+
       - run: |
           yarn install
           yarn build
