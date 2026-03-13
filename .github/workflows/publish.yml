@@ -39,22 +39,21 @@ jobs:
           git config --local user.name "GitHub Actions"
           git commit -am "Update changelog and version for $TAG_NAME" || true
           git push
+  build-and-publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
 
-build-and-publish:
-  runs-on: ubuntu-latest
-  permissions:
-    contents: read
-    id-token: write
+    steps:
+      - uses: actions/checkout@v4
 
-  steps:
-    - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
 
-    - uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-        registry-url: 'https://registry.npmjs.org'
+      - run: yarn install
+      - run: yarn build
 
-    - run: yarn install
-    - run: yarn build
-
-    - run: npm publish --access public
+      - run: npm publish --access public
