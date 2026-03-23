@@ -56,7 +56,9 @@ jobs:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
 
+      - run: npm --version
+
       - run: yarn install
       - run: yarn build
 
-      - run: npm publish --access public --provenance
+      - run: npm publish --access public --provenance --loglevel=verbose 2>&1 || (cat /home/runner/.npm/_logs/*.log && exit 1)
