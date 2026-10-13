@@ -1,4 +1,4 @@
-## [Unreleased]
+## [0.16.1] 13-10-2026
 ### fixed
 - publish workflow: pin npm 11 (npm 12 requires Node 22+), 0.16.0 was never published on npm
 
