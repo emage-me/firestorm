@@ -1,4 +1,4 @@
-## [Unreleased]
+## [0.16.0] 13-10-2026
 ### added
 - `firestorm.reset()` to delete every document (mocked data or Firestore emulator)
 - `startAtId` / `startAfterId` query cursors from a document id
