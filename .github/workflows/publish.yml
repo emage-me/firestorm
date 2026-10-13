@@ -56,7 +56,8 @@ jobs:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
 
-      - run: npm install -g npm@latest
+      # npm 12+ requires Node 22+; npm 11 supports OIDC trusted publishing on Node 20
+      - run: npm install -g npm@11
 
       - run: yarn install
       - run: yarn build
