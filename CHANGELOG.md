@@ -1,3 +1,7 @@
+## [Unreleased]
+### fixed
+- publish workflow: pin npm 11 (npm 12 requires Node 22+), 0.16.0 was never published on npm
+
 ## [0.16.0] 13-10-2026
 ### added
 - `firestorm.reset()` to delete every document (mocked data or Firestore emulator)
