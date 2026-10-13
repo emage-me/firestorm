@@ -24,6 +24,14 @@ await User.query().orderby('age','asc').get()
 await User.query().limit(3).get()
 ```
 
+### Cursor by document id
+Start at (or after) a document from its id, the document snapshot is fetched when the query runs.
+Not available on collection group queries.
+```javascript
+await User.query().orderBy('lastName','asc').startAtId('42').limit(10).get()
+await User.query().orderBy('lastName','asc').startAfterId('42').limit(10).get()
+```
+
 ### Multiple operation
 Query operation can be chained
 ```javascript

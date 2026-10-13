@@ -11,6 +11,10 @@ export class Firestorm {
   initialize (firestore: Firestore): void {
     this.firestore = firestore
   }
+
+  async reset (): Promise<void> {
+    this.data = {}
+  }
 }
 
 export default new Firestorm()

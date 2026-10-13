@@ -1,5 +1,5 @@
 import { clear } from './test.helper'
-import { Collection, field, date } from '../src'
+import firestorm, { Collection, field, date } from '../src'
 import { firestore } from 'firebase-admin'
 
 interface Field {
@@ -429,5 +429,62 @@ describe('Firebase', () => {
         expect(dbModels).toStrictEqual([])
       })
     })
+  })
+})
+
+describe('Firestorm in-memory parity', () => {
+  let model: Model
+
+  beforeEach(async () => {
+    model = new Model({ label: 'value', field: { label: 'nested', obj: { count: 1 } } })
+    await model.save()
+  })
+
+  afterEach(async () => {
+    await clear()
+  })
+
+  it('does not persist instance changes without save', async () => {
+    model.field.obj.count = 10
+    const dbModel = await Model.findOrFail(model.id)
+    expect(dbModel.field.obj.count).toBe(1)
+  })
+  it('does not share data between two reads', async () => {
+    const dbModel = await Model.findOrFail(model.id)
+    dbModel.field.label = 'changed'
+    const otherDbModel = await Model.findOrFail(model.id)
+    expect(otherDbModel.field.label).toBe('nested')
+  })
+  it('returns saved changes in queries', async () => {
+    model.label = 'otherValue'
+    await model.save()
+    const dbModels = await Model.query().where('label', '==', 'otherValue').get()
+    expect(dbModels.length).toBe(1)
+  })
+  it('throws when updating a document that does not exist', async () => {
+    const unsavedModel = new Model({ id: 'unknown' })
+    await expect(unsavedModel.update({ label: 'value' })).rejects.toThrow('NOT_FOUND')
+  })
+  it('deletes only the deleted document', async () => {
+    const otherModel = new Model({ label: 'other' })
+    await otherModel.save()
+    await model.delete()
+    const dbModels = await Model.findAll()
+    expect(dbModels.map(dbModel => dbModel.id)).toStrictEqual([otherModel.id])
+  })
+  it('applies arrayUnion and arrayRemove', async () => {
+    await model.set({ ...model.data(), tags: ['a', 'b'] })
+    await model.update({ 'field.tags': firestore.FieldValue.arrayUnion('c') })
+    await model.update({ 'field.tags': firestore.FieldValue.arrayRemove('a') })
+    const dbModel = await Model.findOrFail(model.id)
+    expect((dbModel.field as unknown as { tags: string[] }).tags).toStrictEqual(['c'])
+  })
+})
+
+describe('firestorm.reset', () => {
+  it('deletes every document', async () => {
+    await new Model({ label: 'value' }).save()
+    await firestorm.reset()
+    expect(await Model.findAll()).toStrictEqual([])
   })
 })

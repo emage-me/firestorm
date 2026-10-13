@@ -151,3 +151,26 @@ describe('Firebase', () => {
     })
   })
 })
+
+describe('Firebase subcollection parity', () => {
+  afterEach(async () => {
+    await clear()
+  })
+
+  it('sets the parent id on collection group queries', async () => {
+    const model = new Model({ id: 'parent' })
+    await Promise.all([model.save(), model.users().create({ id: 'child', firstName: 'jean' }).save()])
+    const [user] = await User.query().where('firstName', '==', 'jean').get()
+    expect(user.parent?.id).toBe('parent')
+  })
+  it('deletes only the deleted subcollection document', async () => {
+    const model = new Model({ id: 'parent' })
+    const otherModel = new Model({ id: 'otherParent' })
+    const user = model.users().create({ id: 'user', firstName: 'jean' })
+    const otherUser = otherModel.users().create({ id: 'otherUser', firstName: 'jean' })
+    await Promise.all([model.save(), otherModel.save(), user.save(), otherUser.save()])
+    await user.delete()
+    const users = await User.query().where('firstName', '==', 'jean').get()
+    expect(users.map(dbUser => dbUser.id)).toStrictEqual(['otherUser'])
+  })
+})

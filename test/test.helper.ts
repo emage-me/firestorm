@@ -1,6 +1,5 @@
 import admin from 'firebase-admin'
 import firestorm from '../src'
-import { initializeTestEnvironment } from '@firebase/rules-unit-testing'
 
 const projectId = `emage-me-test-${Math.floor(Math.random() * 100000000)}`
 process.env.FIRESTORE_EMULATOR_HOST = '127.0.0.1:8080'
@@ -17,10 +16,5 @@ const initTest = (): void => {
 if (!isMocked) initTest()
 
 export const clear = async (): Promise<void> => {
-  if (isMocked) {
-    firestorm.data = {}
-  } else {
-    const testEnv = await initializeTestEnvironment({ projectId })
-    await testEnv.clearFirestore()
-  }
+  await firestorm.reset()
 }

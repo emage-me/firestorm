@@ -1,3 +1,19 @@
+## [Unreleased]
+### added
+- `firestorm.reset()` to delete every document (mocked data or Firestore emulator)
+- `startAtId` / `startAfterId` query cursors from a document id
+- mocked version: `<`, `>`, `not-in` and `array-contains-any` operators, `FieldPath.documentId()` filters
+- mocked version: `arrayUnion`, `arrayRemove`, `delete` and `serverTimestamp` field values
+### fixed
+- mocked version: date equality in `==`, `!=`, `in` and `not-in`
+- mocked version: `orderBy` on strings, nested fields and several fields, documents without the ordered field excluded
+- mocked version: stored data is isolated from instances (deep copy on write and read)
+- mocked version: queries returned stale data after a second `save`
+- mocked version: `delete` could remove the wrong collection group document
+- mocked version: `parent` id restored on collection group queries
+- mocked version: `update` throws `NOT_FOUND` on a missing document
+- mocked version: `@date(x)` default value replaced by `new Date()`, like the real version
+
 ## [0.15.2] 07-02-2025
 ### fixed
 - @date in subObject and array of subObject

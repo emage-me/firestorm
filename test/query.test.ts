@@ -1,6 +1,6 @@
 import { clear } from './test.helper'
 import { FieldPath } from '@google-cloud/firestore'
-import { Collection, field } from '../src'
+import { Collection, field, date } from '../src'
 
 class Model extends Collection {
   static collectionName: string = 'model'
@@ -221,6 +221,101 @@ describe('Firestorm query', () => {
     it('returns 2', async () => {
       const count = await Model.query().count()
       expect(count).toStrictEqual(2)
+    })
+  })
+})
+
+class DatedModel extends Collection {
+  static collectionName: string = 'datedModel'
+  @field() label: string
+  @field() rank: number
+  @field() tags: string[]
+  @date() eventDate: Date
+}
+
+describe('Firestorm query operators', () => {
+  let first: DatedModel
+  let second: DatedModel
+  let third: DatedModel
+
+  beforeEach(async () => {
+    first = new DatedModel({ id: 'a', label: 'alpha', rank: 1, tags: ['red'], eventDate: new Date('2026-01-01') })
+    second = new DatedModel({ id: 'b', label: 'beta', rank: 2, tags: ['blue'], eventDate: new Date('2026-02-01') })
+    third = new DatedModel({ id: 'c', label: 'gamma', rank: 2, tags: ['green'] })
+    await Promise.all([first.save(), second.save(), third.save()])
+  })
+
+  afterEach(async () => {
+    await clear()
+  })
+
+  const ids = (models: DatedModel[]): string[] => models.map(model => model.id).sort()
+
+  it('filters with < operation', async () => {
+    expect(ids(await DatedModel.query().where('rank', '<', 2).get())).toStrictEqual(['a'])
+  })
+  it('filters with > operation', async () => {
+    expect(ids(await DatedModel.query().where('rank', '>', 1).get())).toStrictEqual(['b', 'c'])
+  })
+  it('filters with not-in operation', async () => {
+    expect(ids(await DatedModel.query().where('label', 'not-in', ['alpha', 'beta']).get())).toStrictEqual(['c'])
+  })
+  it('filters with array-contains-any operation', async () => {
+    expect(ids(await DatedModel.query().where('tags', 'array-contains-any', ['red', 'green']).get())).toStrictEqual(['a', 'c'])
+  })
+  it('filters dates with == operation', async () => {
+    expect(ids(await DatedModel.query().where('eventDate', '==', new Date('2026-02-01')).get())).toStrictEqual(['b'])
+  })
+  it('filters dates with in operation', async () => {
+    expect(ids(await DatedModel.query().where('eventDate', 'in', [new Date('2026-01-01')]).get())).toStrictEqual(['a'])
+  })
+  it('excludes documents without the field with != operation', async () => {
+    expect(ids(await DatedModel.query().where('eventDate', '!=', new Date('2026-01-01')).get())).toStrictEqual(['b'])
+  })
+  it('filters on document id with FieldPath.documentId()', async () => {
+    expect(ids(await DatedModel.query().where(FieldPath.documentId() as unknown as string, 'in', ['a', 'c']).get())).toStrictEqual(['a', 'c'])
+  })
+
+  describe('orderBy', () => {
+    it('orders strings', async () => {
+      const models = await DatedModel.query().orderBy('label', 'desc').get()
+      expect(models.map(model => model.id)).toStrictEqual(['c', 'b', 'a'])
+    })
+    it('orders by several fields', async () => {
+      const models = await DatedModel.query().orderBy('rank', 'desc').orderBy('label', 'asc').get()
+      expect(models.map(model => model.id)).toStrictEqual(['b', 'c', 'a'])
+    })
+    it('excludes documents without the ordered field', async () => {
+      const models = await DatedModel.query().orderBy('eventDate', 'asc').get()
+      expect(models.map(model => model.id)).toStrictEqual(['a', 'b'])
+    })
+    it('applies the limit after ordering', async () => {
+      const models = await DatedModel.query().limit(1).orderBy('label', 'desc').get()
+      expect(models.map(model => model.id)).toStrictEqual(['c'])
+    })
+  })
+
+  describe('startAtId', () => {
+    it('starts at the document', async () => {
+      const models = await DatedModel.query().orderBy('label', 'asc').startAtId('b').get()
+      expect(models.map(model => model.id)).toStrictEqual(['b', 'c'])
+    })
+    it('positions on a document filtered out of the results', async () => {
+      const models = await DatedModel.query().where('rank', '==', 2).orderBy('label', 'asc').startAtId('a').get()
+      expect(models.map(model => model.id)).toStrictEqual(['b', 'c'])
+    })
+    it('counts from the document', async () => {
+      expect(await DatedModel.query().orderBy('label', 'asc').startAtId('b').count()).toBe(2)
+    })
+    it('throws with an unknown document', async () => {
+      await expect(DatedModel.query().orderBy('label', 'asc').startAtId('unknown').get()).rejects.toThrow()
+    })
+  })
+
+  describe('startAfterId', () => {
+    it('starts after the document', async () => {
+      const models = await DatedModel.query().orderBy('label', 'asc').startAfterId('b').get()
+      expect(models.map(model => model.id)).toStrictEqual(['c'])
     })
   })
 })
